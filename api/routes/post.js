@@ -9,7 +9,7 @@ const router = Router();
  * request: { title, content }
  * response: { message }
  */
-router.post("/");
+router.post("/", Post.createOne);
 
 
 /**
@@ -17,7 +17,7 @@ router.post("/");
  * response: { data: [...{ postId, userId, nickname, title, 
  *                              createdAt, updatedAt, likes(:int) }] }
  */
-router.get("/");
+router.get("/", Post.findAll);
 
 
 /**
@@ -25,21 +25,21 @@ router.get("/");
  * response: { data: { postId, userId, nickname, title,
  *                            content, createdAt, updatedAt, likes(:int) } }
  */
-router.get("/:postId");
+router.get("/:postId", Post.findOne);
 
 
 /**
  * request: { title, content }
  * response: { message }
  */
-router.put("/:postId");
+router.put("/:postId", Post.updateOne);
 
 
 /**
  * request: 
  * response: { message }
  */
-router.delete("/:postId");
+router.delete("/:postId", Post.deleteOne);
 
 
 /**
@@ -47,14 +47,14 @@ router.delete("/:postId");
  * response: { data: [...{ postId, userId, nickname, title, 
  *                              createdAt, updatedAt, likes(:int) }] }
  */
-router.get("/like");
+router.get("/like", Post.likeList);
 
 
 /**
  * request: 
  * response: { message }
  */
-router.get("/:postId/like")
+router.get("/:postId/like", Post.toggleLike)
 
 
 export default router;

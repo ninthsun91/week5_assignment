@@ -9,7 +9,7 @@ const router = Router();
  * request: { comment }
  * response: { message }
  */
-router.post("/:postId");
+router.post("/:postId", Comment.createOne);
 
 
 /**
@@ -17,21 +17,21 @@ router.post("/:postId");
  * response: { data: [...{ commentId, userId, nickname, comment, 
  *                              createdAt, updatedAt }]}
  */
-router.get("/:postId");
+router.get("/:postId", Comment.getCommentList);
 
 
 /**
  * request: { comment }
  * response: { message }
  */
-router.put("/:commentId");
+router.put("/:commentId", Comment.updateOne);
 
 
 /**
  * request: 
  * response: { message }
  */
-router.delete("/:commentId");
+router.delete("/:commentId", Comment.deleteOne);
 
 
 export default router;

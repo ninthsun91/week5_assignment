@@ -1,8 +1,22 @@
 import { DataTypes, Model } from "sequelize";
-import sequelizeConnection from "../config";
+import sequelize from "../config.js";
 
 
-class Post extends Model {};
+class Post extends Model {
+    static associate(models) {
+        this.belongsTo(models.Users, {
+            foreignKey: "userId",
+        });
+        this.hasMany(models.Comments, {
+            as: "Comments",
+            foreignKey: "postId",
+        });
+        this.hasMany(models.Likes, {
+            as: "Likes",
+            foreignKey: "postId",
+        });
+    }
+};
 
 Post.init({
     postId: {
@@ -25,21 +39,17 @@ Post.init({
         type: DataTypes.TEXT("medium"),
         allowNull: false,
     },
-    commentIds: {
-        type: DataTypes.JSON,
-        defaultValue: [],
-        references: {
-            model: "Comments",
-            key: "commentId"
-        }
-    },
-    likes: {},
 }, {
-    sequelizeConnection,
+    sequelize,
     modelName: "Post",
     timestamps: true,
-    paranoid: true,
+    paranoid: false,
 });
+
+// (async()=>{
+//     console.log("SYNC POSTS");
+//     await Post.sync();
+// }) ();
 
 
 export default Post;

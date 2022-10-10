@@ -2,7 +2,7 @@ import { DataTypes, Model } from "sequelize";
 import sequelize from "../config.js";
 
 
-class Comment extends Model {
+class Like extends Model {
     static associate(models) {
         this.belongsTo(models.Users, {
             foreignKey: "userId",
@@ -13,8 +13,8 @@ class Comment extends Model {
     }
 };
 
-Comment.init({
-    commentId: {
+Like.init({
+    likeId: {
         type: DataTypes.SMALLINT.UNSIGNED,
         autoIncrement: true,
         primaryKey: true,
@@ -24,30 +24,26 @@ Comment.init({
         references: {
             model: "Posts",
             key: "postId",
-        }
+        },
+        onDelete: "cascade",
     },
     userId: {
         type: DataTypes.SMALLINT.UNSIGNED,
         references: {
             model: "Users",
             key: "userId",
-        }
+        },
+        onDelete: "cascade",
     },
-    comment: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-},{
+}, {
     sequelize,
-    modelName: "Comment",
-    timestamps: true,
-    paranoid: true,
+    modelName: "Like",
 });
 
 // (async()=>{
-//     console.log("SYNC COMMENT");
-//     await Comment.sync();
-// })();
+//     console.log("SYNC LIKE");
+//     await Like.sync();
+// });
 
 
-export default Comment;
+export default Like;

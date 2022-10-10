@@ -4,22 +4,7 @@ import cookieParser from "cookie-parser";
 
 import env from "./config.env.js";
 import sequelizeConnection from "./db/config.js";
-
-
-try {
-    await sequelizeConnection.authenticate();
-    console.log("DB CONNECTED");
-    
-} catch (error) {
-    console.log(`SERVER FAIL: ${error}`);
-    process.exit(0);
-}
-
-
-import commentRouter from "./api/routes/comment.js";
-import postRouter from "./api/routes/post.js";
-import userRouter from "./api/routes/user.js";
-
+import router from "./api/routes/index.js";
 
 const app = express();
 const PORT = env.PORT;
@@ -38,9 +23,7 @@ app.use(session({
     }
 }));
 
-app.use("/comments", commentRouter);
-app.use("/posts", postRouter);
-app.use("/", userRouter);
+app.use("/", router);
 
 app.use((req, res, next)=>{
     const error = new Error("PAGE NOT FOUND");
@@ -48,17 +31,13 @@ app.use((req, res, next)=>{
 });
 
 
-app.listen(PORT, ()=>{
-    console.log(`SERVER RUNNING ON PORT ${PORT}`);
-});    
-
-// try {
-//     await sequelizeConnection.authenticate();
+try {
+    await sequelizeConnection.authenticate();
     
-//     app.listen(PORT, ()=>{
-//         console.log(`SERVER RUNNING ON PORT ${PORT}`);
-//     });    
-// } catch (error) {
-//     console.log(`SERVER FAIL: ${error}`);
-//     process.exit(0);
-// }
+    app.listen(PORT, ()=>{
+        console.log(`SERVER RUNNING ON PORT ${PORT}`);
+    });    
+} catch (error) {
+    console.log(`SERVER FAIL: ${error}`);
+    process.exit(0);
+}

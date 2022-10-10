@@ -1,4 +1,5 @@
 import { Router } from "express";
+import * as Post from "../controllers/post.js";
 
 
 const router = Router();

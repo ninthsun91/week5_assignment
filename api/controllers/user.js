@@ -1,4 +1,4 @@
-// import * as User from "../../db/queries/user.js";
+import * as User from "../../db/queries/user.js";
 
 
 export async function signup(req, res, next) {

@@ -1,8 +1,23 @@
 import { DataTypes, Model } from "sequelize";
-import sequelizeConnection from "../config.js";
+import sequelize from "../config.js";
 
 
-class User extends Model {};
+class User extends Model {
+    static associate(models) {
+        this.hasMany(models.Posts, {
+            as: "Posts",
+            foreignKey: "userId",
+        });
+        this.hasMany(models.Comments, {
+            as: "Comments",
+            foreignKey: "userId",
+        });
+        this.hasMany(models.Likes, {
+            as: "Likes",
+            foreignKey: "userId",
+        });
+    }
+};
 
 User.init({
     userId: {
@@ -11,27 +26,23 @@ User.init({
         primaryKey: true,
     },
     nickname: {
-        type: DataTypes.TEXT('tiny'),
+        type: DataTypes.STRING,
         defaultValue: "whoami",
     },
     password: {
-        type: DataTypes.TEXT('tiny'),
+        type: DataTypes.STRING,
         allowNull: false,
     },
-    likes: {
-        type: DataTypes.JSON,
-        defaultValue: [],
-    },
 }, {
-    sequelizeConnection,
+    sequelize,
     modelName: "User",
     timestamps: true,
     paranoid: true,
 });
 
 // (async()=> {
-//     console.log("!!!");
-//     await UserModel.sync({ alter: true });
+//     console.log("SYNC USERS");
+//     await User.sync();
 // })();
 
 

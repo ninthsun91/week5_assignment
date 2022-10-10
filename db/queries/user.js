@@ -1,28 +1,36 @@
 // import sequelize from "../config.js";
 import UserModel from "../models/user.js";
+import { Op } from "sequelize";
 
 
-export async function findOne(userId) {
+export async function findOne(ID) {
     console.log("USER FINDONE");
     const result = await UserModel.findOne({
-        where: { userId }
+        where: { 
+            [Op.or]: [
+                { userId: ID },
+                { nickname: ID }
+            ]
+         }
     });
     return result!==null ? result.get() : null;
 }
 
 export async function createOne(user) {
     console.log("USER CREATEONE");
-    const result = await UserModel.create(user);
-    return {
-        user: result.get(),
-        isNewRecord: result._options.isNewRecord,
+    try {
+        const result = await UserModel.create(user);
+        return {
+            user: result.get(),
+            isNewRecord: result._options.isNewRecord,
+        }
+        
+    } catch (error) {
+        if (error.parent.code === "ER_DUP_ENTRY") {
+            return {
+                user: {},
+                isNewRecord: false,
+            }
+        };
     }
-}
-
-export async function toggleLike() {
-    console.log("USER TOGGLELIKE");
-}
-
-export async function getLikeList() {
-    console.log("USER GETLIKELIST");
 }

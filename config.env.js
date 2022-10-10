@@ -12,5 +12,5 @@ export default {
     DB_PASSWORD: process.env.DB_PASSWORD,
 
     JWT_KEY: process.env.JWT_KEY,
-    SALT_ROUND: process.env.SALT_ROUND
+    SALT_ROUND: Number(process.env.SALT_ROUND)
 }

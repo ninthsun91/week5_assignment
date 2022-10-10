@@ -27,7 +27,8 @@ User.init({
     },
     nickname: {
         type: DataTypes.STRING,
-        defaultValue: "whoami",
+        allowNull: false,
+        unique: true,
     },
     password: {
         type: DataTypes.STRING,

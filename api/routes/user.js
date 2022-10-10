@@ -13,7 +13,7 @@ router.post("/signup", User.signup);
 
 /**
  * request: { nickname, password }
- * response: { token }
+ * response: { accesstoken, refreshToken }
  */
 router.post("/login", User.singin);
 

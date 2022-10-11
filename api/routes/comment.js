@@ -8,6 +8,7 @@ const router = Router();
 /**
  * request: { comment }
  * response: { message }
+ * auth
  */
 router.post("/:postId", Comment.createOne);
 
@@ -23,6 +24,7 @@ router.get("/:postId", Comment.getCommentList);
 /**
  * request: { comment }
  * response: { message }
+ * auth
  */
 router.put("/:commentId", Comment.updateOne);
 
@@ -30,6 +32,7 @@ router.put("/:commentId", Comment.updateOne);
 /**
  * request: 
  * response: { message }
+ * auth
  */
 router.delete("/:commentId", Comment.deleteOne);
 

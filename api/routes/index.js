@@ -10,6 +10,13 @@ const router = Router();
 
 router.get("/sync", sync);
 
+import { authMiddleware } from "../../middlewares/auth.js";
+router.get("/auth", authMiddleware, (req, res, next)=>{
+    console.log("PASS");
+
+    res.send("PASS");
+});
+
 router.use("/", userRouter);
 router.use("/posts", postRouter);
 router.use("/comments", commentRouter);

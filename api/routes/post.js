@@ -8,6 +8,7 @@ const router = Router();
 /**
  * request: { title, content }
  * response: { message }
+ * auth
  */
 router.post("/", Post.createOne);
 
@@ -31,6 +32,7 @@ router.get("/:postId", Post.findOne);
 /**
  * request: { title, content }
  * response: { message }
+ * auth
  */
 router.put("/:postId", Post.updateOne);
 
@@ -38,6 +40,7 @@ router.put("/:postId", Post.updateOne);
 /**
  * request: 
  * response: { message }
+ * auth
  */
 router.delete("/:postId", Post.deleteOne);
 
@@ -46,6 +49,7 @@ router.delete("/:postId", Post.deleteOne);
  * request:
  * response: { data: [...{ postId, userId, nickname, title, 
  *                              createdAt, updatedAt, likes(:int) }] }
+ * auth
  */
 router.get("/like", Post.likeList);
 
@@ -53,6 +57,7 @@ router.get("/like", Post.likeList);
 /**
  * request: 
  * response: { message }
+ * auth
  */
 router.get("/:postId/like", Post.toggleLike)
 

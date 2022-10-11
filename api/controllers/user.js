@@ -60,10 +60,13 @@ export async function singin(req, res, next) {
         }
         const accessToken = jwt.sign(payload);
         const refreshToken = jwt.refresh();
+        req.session[refreshToken] = JSON.stringify(payload);
 
-        res.status(200).json({
-            accessToken,
+        res.status(200).set({
+            Authorization: "Bearer " + accessToken, 
             refreshToken
+        }).json({
+            message: "로그인되었습니다."
         });
 
     } catch (error) {

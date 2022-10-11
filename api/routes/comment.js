@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as Comment from "../controllers/comment.js";
+import { tempAuth } from "../../middlewares/auth.js";
 
 
 const router = Router();
@@ -10,7 +11,7 @@ const router = Router();
  * response: { message }
  * auth
  */
-router.post("/:postId", Comment.createOne);
+router.post("/:postId", tempAuth, Comment.createOne);
 
 
 /**
@@ -26,7 +27,7 @@ router.get("/:postId", Comment.getCommentList);
  * response: { message }
  * auth
  */
-router.put("/:commentId", Comment.updateOne);
+router.put("/:commentId", tempAuth, Comment.updateOne);
 
 
 /**
@@ -34,7 +35,7 @@ router.put("/:commentId", Comment.updateOne);
  * response: { message }
  * auth
  */
-router.delete("/:commentId", Comment.deleteOne);
+router.delete("/:commentId", tempAuth, Comment.deleteOne);
 
 
 export default router;

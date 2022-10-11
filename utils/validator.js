@@ -12,9 +12,19 @@ export default {
         password: Joi.string().min(4).required(),
     }),
 
-    postSchema: Joi.object({}),
-    postEditSchema: Joi.object({}),
+    postSchema: Joi.object({
+        title: Joi.string().required(),
+        content: Joi.string().required()
+    }),
+    postEditSchema: Joi.object({
+        title: Joi.string().required(),
+        content: Joi.string().required()
+    }),
     
-    commentSchema: Joi.object({}),
-    commentEditSchema: Joi.object({}),
+    commentSchema: Joi.object({
+        comment: Joi.string().required(),
+    }),
+    commentEditSchema: Joi.object({
+        comment: Joi.string().required(),
+    }),
 }

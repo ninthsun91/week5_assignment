@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as Post from "../controllers/post.js";
+import { tempAuth } from "../../middlewares/auth.js";
 
 
 const router = Router();
@@ -10,7 +11,7 @@ const router = Router();
  * response: { message }
  * auth
  */
-router.post("/", Post.createOne);
+router.post("/", tempAuth, Post.createOne);
 
 
 /**
@@ -34,7 +35,7 @@ router.get("/:postId", Post.findOne);
  * response: { message }
  * auth
  */
-router.put("/:postId", Post.updateOne);
+router.put("/:postId", tempAuth, Post.updateOne);
 
 
 /**
@@ -42,7 +43,7 @@ router.put("/:postId", Post.updateOne);
  * response: { message }
  * auth
  */
-router.delete("/:postId", Post.deleteOne);
+router.delete("/:postId", tempAuth, Post.deleteOne);
 
 
 /**
@@ -51,7 +52,7 @@ router.delete("/:postId", Post.deleteOne);
  *                              createdAt, updatedAt, likes(:int) }] }
  * auth
  */
-router.get("/like", Post.likeList);
+router.get("/like", tempAuth, Post.likeList);
 
 
 /**
@@ -59,7 +60,7 @@ router.get("/like", Post.likeList);
  * response: { message }
  * auth
  */
-router.get("/:postId/like", Post.toggleLike)
+router.get("/:postId/like", tempAuth, Post.toggleLike)
 
 
 export default router;

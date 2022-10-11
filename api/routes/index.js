@@ -7,6 +7,12 @@ import commentRouter from "./comment.js";
 
 const router = Router();
 
+router.get("/", (req,res,next)=>{
+    res.locals.test = "TEST"
+    res.set("TEST", "THIS IS HEADER")
+    console.log(res.locals.test);
+    res.send("SUCCESS")
+})
 
 router.get("/sync", sync);
 

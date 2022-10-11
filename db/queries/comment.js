@@ -1,4 +1,5 @@
 import CommentModel from "../models/comment.js";
+import UserModel from "../models/user.js";
 
 
 export async function createOne(comment) {
@@ -12,23 +13,26 @@ export async function createOne(comment) {
 
 export async function findOne(commentId) {
     console.log("COMMENT FINDONE");
-    const result = await CommentModel.findOne({
-        where: { commentId }
-    });
-    return result!==null ? result.get() : null;
+    return CommentModel.findByPk(commentId);
 }
 
 export async function findAll(postId) {
     console.log("COMMENT FINDALL");
-    return await CommentModel.find({
-        where: { postId }
+    return await CommentModel.findAll({
+        where: { postId },
+        attributes: {
+            exclude: ["postId", "deletedAt"]
+        },
+        // include: [UserModel]
     });
 }
 
-export async function updateOne(commentId) {
+export async function updateOne(comment) {
     console.log("COMMENT UPDATEONE");
-    return await CommentModel.updateOne({}, {
-        where: { commentId }
+    return await CommentModel.update({
+        comment: comment.comment
+    }, {
+        where: { commentId: comment.commentId }
     });
 }
 

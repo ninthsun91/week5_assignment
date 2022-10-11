@@ -27,6 +27,7 @@ export function authMiddleware(req, res, next) {
             const payload = req.session[refreshtoken];
             const newAccessToken = jwt.sign(JSON.parse(payload));
     
+            res.locals.user = payload;
             res.set("Authorization", "Bearer "+ newAccessToken);
             return next();
         } else {
@@ -56,6 +57,10 @@ export function tokenChecker(req, res, next) {
 }
 
 
-function invalidError() {
-    
+export function tempAuth(req, res, next) {
+    req.app.locals.user = {
+        userId: 1,
+        nickname: "Ray"
+    }
+    return next();
 }

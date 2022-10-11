@@ -27,10 +27,7 @@ export async function createOne(user) {
         
     } catch (error) {
         if (error.parent.code === "ER_DUP_ENTRY") {
-            return {
-                user: {},
-                isNewRecord: false,
-            }
+            return { user: {}, isNewRecord: false }
         };
     }
 }

@@ -11,11 +11,12 @@ export default function Posts(sequelize) {
         },
         userId: {
             type: DataTypes.SMALLINT.UNSIGNED,
+            allowNull: false,
             references: {
                 model: "Users",
                 key: "userId",
             },
-            onDelete: "cascade"
+            onDelete: "cascade",
         },
         title: {
             type: DataTypes.TEXT("tiny"),
@@ -25,10 +26,10 @@ export default function Posts(sequelize) {
             type: DataTypes.TEXT("medium"),
             allowNull: false,
         },
-        // likes: {
-        //     type: DataTypes.SMALLINT.UNSIGNED,
-        //     default: 0
-        // }
+        likes: {
+            type: DataTypes.SMALLINT.UNSIGNED,
+            defaultValue: 0,
+        }
     }, {
         timestamps: true,
         paranoid: false,

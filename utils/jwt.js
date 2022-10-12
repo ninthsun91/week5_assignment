@@ -17,7 +17,6 @@ export default {
             const payload = jwt.verify(accessToken, env.JWT_KEY);
             return payload;            
         } catch (error) {
-            console.error(error);
             return null;
         }
     },

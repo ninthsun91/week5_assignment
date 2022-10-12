@@ -84,24 +84,44 @@ async function findLike(ids) {
 
 async function addLike(ids) {
     console.log("ADD LIKE");
-    return await Likes.create({ postId: ids.postId, userId: ids.userId });
+    await Likes.create({ postId: ids.postId, userId: ids.userId });
+    await Posts.increment({"likes": 1}, {where: { postId: ids.postId }});
+    return "add";
 }
 
 async function deleteLike(ids) {
     console.log("DELETE LIKE");
-    return await Likes.destroy({
+    await Likes.destroy({
         where: { postId: ids.postId, userId: ids.userId }
     });
+    await Posts.increment({"likes": -1}, {where: { postId: ids.postId }});
+    return "delete";
 }
 
 export async function findLikes(userId) {
     console.log("LIKE LIST");
+
+    return await Likes.findAll({
+        where: { userId },
+        attributes: ["likeId", "postId"],
+        include: {
+            model: Posts,
+            attributes: {
+                exclude: ["content"]
+            },
+            include: {
+                model: Users,
+                attributes: ["nickname"]
+            }
+        },
+        order: [[Posts, "likes", "DESC"]]
+    });
 }
 
 export async function countLikes(postId) {
     console.log("COUNT LIKES");
 
     return await Likes.count({
-        where: { postId }
+        where: { postId },
     });
 }

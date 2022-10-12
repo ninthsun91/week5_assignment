@@ -37,9 +37,9 @@ export async function findAll(req, res, next) {
                 userId: post.userId,
                 nickname: post.User.nickname,
                 title: post.title,
+                likes: post.likes,
                 createdAt: post.createdAt,
                 updatedAt: post.updatedAt,
-                likes: 0,
             };
         });
 
@@ -78,7 +78,6 @@ export async function findOne(req, res, next) {
             content: post.content,
             createdAt: post.createdAt,
             updatedAt: post.updatedAt,
-            likes: 0,
         }
     });
 }
@@ -147,13 +146,13 @@ export async function toggleLike(req, res, next) {
 
     try {
         const result = await Post.toggleLike({ postId, userId });
-        if (result === 1) {
-            res.status(200).json({
-                message: "게시글의 좋아요를 취소했습니다."
-            });
-        } else {
+        if (result === "add") {
             res.status(200).json({
                 message: "게시글의 좋아요를 등록했습니다."
+            });
+        } else if (result === "delete") {
+            res.status(200).json({
+                message: "게시글의 좋아요를 취소했습니다."
             });
         }
         
@@ -166,4 +165,21 @@ export async function toggleLike(req, res, next) {
 
 export async function likeList(req, res, next) {
     console.log("POST CONTROLLER LIKELIST");
+
+    const { userId } = req.app.locals.user;
+    const likeList = await Post.findLikes(userId);
+    const data = likeList.map((like)=>{
+        return {
+            postId: like.Post.postId,
+            userId: like.Post.userId,
+            nickname: like.Post.User.nickname,
+            title: like.Post.title,
+            createdAt: like.Post.createdAt,
+            updatedAt: like.Post.updatedAt
+        }
+    });
+
+    res.status(200).json({
+        data
+    });
 }

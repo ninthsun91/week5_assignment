@@ -10,6 +10,7 @@ export default function Likes(sequelize) {
         },
         postId: {
             type: DataTypes.SMALLINT.UNSIGNED,
+            allowNull: false,
             references: {
                 model: "Posts",
                 key: "postId",
@@ -18,6 +19,7 @@ export default function Likes(sequelize) {
         },
         userId: {
             type: DataTypes.SMALLINT.UNSIGNED,
+            allowNull: false,
             references: {
                 model: "Users",
                 key: "userId",

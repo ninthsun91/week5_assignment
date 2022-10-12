@@ -10,6 +10,7 @@ export default function Comments(sequelize) {
         },
         postId: {
             type: DataTypes.SMALLINT.UNSIGNED,
+            allowNull: false,
             references: {
                 model: "Posts",
                 key: "postId",
@@ -17,6 +18,7 @@ export default function Comments(sequelize) {
         },
         userId: {
             type: DataTypes.SMALLINT.UNSIGNED,
+            allowNull: false,
             references: {
                 model: "Users",
                 key: "userId",
@@ -24,7 +26,7 @@ export default function Comments(sequelize) {
         },
         comment: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
     },{
         timestamps: true,

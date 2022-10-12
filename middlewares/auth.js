@@ -3,6 +3,7 @@ import jwt from "../utils/jwt.js";
 
 export function authMiddleware(req, res, next) {
     console.log("AUTHMIDDLEWARE");
+    console.log(req.session);
 
     const invalidError = new Error("로그인이 필요한 기능입니다.");
     try {
@@ -16,7 +17,6 @@ export function authMiddleware(req, res, next) {
         }
     
         const payload = jwt.verify(accessToken);
-        console.log(payload);
         if (payload === null) {
             console.log("INVALID ACCESSTOKEN");
     
@@ -24,14 +24,16 @@ export function authMiddleware(req, res, next) {
             if (refreshCheck === null) {
                 throw invalidError;
             }
+
             const payload = req.session[refreshtoken];
-            const newAccessToken = jwt.sign(JSON.parse(payload));
-    
             req.app.locals.user = payload;
+            const newAccessToken = jwt.sign(JSON.parse(payload));
+
             res.set("Authorization", "Bearer "+ newAccessToken);
             return next();
         } else {
             console.log("VALID ACCESSTOKEN");
+            req.app.locals.user = payload;
             res.set("Authorization", "Bearer "+ accessToken);
             return next();
         }
@@ -59,10 +61,13 @@ export function tokenChecker(req, res, next) {
 
 
 export function tempAuth(req, res, next) {
-    const key = 5;
-    switch (key) {
+    const key = req.query.id;
+    switch (Number(key)) {
         case 1:
             req.app.locals.user = { userId: 1, nickname: "BOSS" };
+            break;
+        case 2:
+            req.app.locals.user = { userId: 2, nickname: "root" };
             break;
         case 3:
             req.app.locals.user = { userId: 3, nickname: "mysql" };

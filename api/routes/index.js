@@ -8,8 +8,8 @@ import commentRouter from "./comment.js";
 
 const router = Router();
 
-router.get("/", (req, res, next)=>{
-    res.send("INDEX")
+router.get("/api", (req, res, next)=>{
+    res.redirect("https://app.swaggerhub.com/apis-docs/NINTHSUN91_1/hanghae_week4/1.0.0#/")
 });
 
 // RECREATE TABLES

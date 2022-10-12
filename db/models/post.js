@@ -25,6 +25,10 @@ export default function Posts(sequelize) {
             type: DataTypes.TEXT("medium"),
             allowNull: false,
         },
+        // likes: {
+        //     type: DataTypes.SMALLINT.UNSIGNED,
+        //     default: 0
+        // }
     }, {
         timestamps: true,
         paranoid: false,

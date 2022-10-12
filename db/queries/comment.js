@@ -36,11 +36,10 @@ export async function updateOne(comment) {
     console.log("COMMENT UPDATEONE");
 
     const check = await Comments.findOne({
-        where: { commentId: comment.commentId, userId: comment.userId }
+        where: { commentId: comment.commentId },
+        attributes: ["userId"]
     });
-    if (check === null) {
-        return [ null ];
-    }
+    if (check.get().userId !== comment.userId) return [ null ];
 
     return await Comments.update({
         comment: comment.comment
@@ -53,11 +52,10 @@ export async function deleteOne(ids) {
     console.log("COMMENT DELETEONE");
 
     const check = await Comments.findOne({
-        where: { commentId: ids.commentId, userId: ids.userId }
+        where: { commentId: ids.commentId },
+        attributes: ["userId"]
     });
-    if (check === null) {
-        return [ null ];
-    }
+    if (check.get().userId !== ids.userId) return null;
 
     return await Comments.destroy({
         where: { commentId: ids.commentId }

@@ -25,7 +25,7 @@ router.get("/", Post.findAll);
 /**
  * request:
  * response: { data: { postId, userId, nickname, title,
- *                            content, createdAt, updatedAt, likes(:int) } }
+ *                            content, createdAt, updatedAt } }
  */
 router.get("/:postId", Post.findOne);
 

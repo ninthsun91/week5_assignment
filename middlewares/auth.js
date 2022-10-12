@@ -59,9 +59,21 @@ export function tokenChecker(req, res, next) {
 
 
 export function tempAuth(req, res, next) {
-    req.app.locals.user = {
-        userId: 1,
-        nickname: "Ray"
+    const key = 5;
+    switch (key) {
+        case 1:
+            req.app.locals.user = { userId: 1, nickname: "BOSS" };
+            break;
+        case 3:
+            req.app.locals.user = { userId: 3, nickname: "mysql" };
+            break;
+        case 4:
+            req.app.locals.user = { userId: 4, nickname: "test" };
+            break;
+        case 5:
+            req.app.locals.user = { userId: 5, nickname: "sparta" };
+            break;
     }
+    
     return next();
 }

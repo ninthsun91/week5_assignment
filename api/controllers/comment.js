@@ -57,7 +57,7 @@ export async function updateOne(req, res, next) {
             case null:
                 throw new Error("수정 권한이 없습니다.");
             case 0:
-                throw new Error("INTERNAL UPDATE FAIL");
+                throw new Error("INTERNAL UPDATE FAILURE");
         }
     
         res.status(200).json({
@@ -76,14 +76,13 @@ export async function deleteOne(req, res, next) {
     try {
         const { userId } = req.app.locals.user;
         const { commentId } = req.params;
-        console.log(commentId);
         
         const result = await Comment.deleteOne({ userId, commentId });
-        switch (result[0]) {
+        switch (result) {
             case null:
                 throw new Error("삭제 권한이 없습니다.");
             case 0:
-                throw new Error("INTERNAL DELETE FAIL");
+                throw new Error("INTERNAL DELETE FAILURE");
         }
     
         res.status(200).json({

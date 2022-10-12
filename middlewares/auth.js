@@ -27,8 +27,6 @@ export function authMiddleware(req, res, next) {
             res.set("Authorization", "Bearer "+ newAccessToken);
             return next();
         } else {
-            console.log("VALID ACCESSTOKEN");
-
             req.app.locals.user = payload;
             res.set("Authorization", "Bearer "+ accessToken);
             return next();

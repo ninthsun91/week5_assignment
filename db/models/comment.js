@@ -14,7 +14,8 @@ export default function Comments(sequelize) {
             references: {
                 model: "Posts",
                 key: "postId",
-            }
+            },
+            onDelete: "cascade",
         },
         userId: {
             type: DataTypes.SMALLINT.UNSIGNED,
@@ -22,7 +23,8 @@ export default function Comments(sequelize) {
             references: {
                 model: "Users",
                 key: "userId",
-            }
+            },
+            onDelete: "cascade",
         },
         comment: {
             type: DataTypes.STRING,
@@ -30,55 +32,6 @@ export default function Comments(sequelize) {
         },
     },{
         timestamps: true,
-        paranoid: true,
+        paranoid: false,
     });
 }
-
-// import { DataTypes, Model } from "sequelize";
-// import sequelize from "../config.js";
-
-
-// class Comments extends Model {
-//     static associate(models) {
-//         this.belongsTo(models.Users, {
-//             foreignKey: "userId",
-//         });
-//         this.belongsTo(models.Posts, {
-//             foreignKey: "postId",
-//         });
-//     }
-// };
-
-// Comments.init({
-//     commentId: {
-//         type: DataTypes.SMALLINT.UNSIGNED,
-//         autoIncrement: true,
-//         primaryKey: true,
-//     },
-//     postId: {
-//         type: DataTypes.SMALLINT.UNSIGNED,
-//         references: {
-//             model: "Posts",
-//             key: "postId",
-//         }
-//     },
-//     userId: {
-//         type: DataTypes.SMALLINT.UNSIGNED,
-//         references: {
-//             model: "Users",
-//             key: "userId",
-//         }
-//     },
-//     comment: {
-//         type: DataTypes.STRING,
-//         allowNull: false
-//     },
-// },{
-//     sequelize,
-//     modelName: "Comments",
-//     timestamps: true,
-//     paranoid: true,
-// });
-
-
-// export default Comments;

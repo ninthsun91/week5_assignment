@@ -1,6 +1,7 @@
 import * as Comment from "../../db/queries/comment.js";
 import joi from "../../utils/validator.js";
 
+
 export async function createOne(req, res, next) {
     console.log("CONTROLLER CREATEONE");
     try {
@@ -28,7 +29,9 @@ export async function createOne(req, res, next) {
 
 export async function getCommentList(req, res, next) {
     console.log("GET COMMENTLIST BY POSTID");
+
     const { postId } = req.params;
+    
     const commentList = await Comment.findAll(postId);
     const data = commentList.map((comment)=>{
         return {
@@ -50,7 +53,7 @@ export async function updateOne(req, res, next) {
         const { userId } = req.app.locals.user;
         const { commentId } = req.params;
         const { comment }
-            = await joi.commentEditSchema.validateAsync(req.body);
+            = await joi.commentSchema.validateAsync(req.body);
         
         const result = await Comment.updateOne({ commentId, userId, comment });
         switch (result[0]) {

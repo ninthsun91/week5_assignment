@@ -11,11 +11,9 @@ export async function signup(req, res, next) {
     try {
         const { nickname, password, confirm } 
             = await joi.signupSchema.validateAsync(req.body);
+
         if (password.includes(nickname) || password !== confirm) {
-            const error = new Error("INVALID PASSWORD");
-            return res.status(400).json({
-                message: error.message,
-            });
+            throw new Error("INVALID PASSWORD");
         }
 
         const user = {
@@ -24,20 +22,15 @@ export async function signup(req, res, next) {
         }
         const result = await User.createOne(user);
 
-        if (result instanceof Error) {
-            console.error(result);
-            throw result;
-        }
-        if (result.isNewRecord === false) {
-            throw new Error("중복된 닉네임입니다.");
-        }
+        if (result instanceof Error) throw result;
+        if (!result.isNewRecord) throw new Error("중복된 닉네임입니다.");
     
         res.status(200).json({
             message: "회원가입에 성공하였습니다.",
         });
         
     } catch (error) {
-        res.status(500).json({
+        res.status(400).json({
             message: error.message
         });
     }
@@ -52,10 +45,7 @@ export async function singin(req, res, next) {
 
         const user = await User.findOne(nickname);
         if (user===null || !(await bcrypt.compare(password, user.password))) {
-            const error = new Error("닉네임 또는 패스워드를 확인해주세요.");
-            return res.status(400).json({
-                message: error.message
-            });
+            throw new Error("닉네임 또는 패스워드를 확인해주세요.");
         }
 
         const payload = {
@@ -74,7 +64,7 @@ export async function singin(req, res, next) {
         });
 
     } catch (error) {
-        res.status(500).json({
+        res.status(400).json({
             message: error.message
         });
     }

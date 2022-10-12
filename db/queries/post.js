@@ -1,16 +1,11 @@
 import { models } from "../config.js";
 
-const { Users, Posts, Comments, Likes } = models;
+const { Users, Posts, Likes } = models;
 
 
 export async function createOne(post) {
     console.log("POST CREATEONE", post);
-
-    const result = await Posts.create(post);
-    return {
-        user: result.get(),
-        isNewRecord: result._options.isNewRecord,
-    }
+    await Posts.create(post);
 }
 
 export async function findAll() {
@@ -65,14 +60,8 @@ export async function deleteOne(ids) {
 export async function toggleLike(ids) {
     console.log("TOGGLE LIKE");
 
-    console.log(ids);
-
     const check = await findLike(ids);
-    if (check ===  null) {
-        return await addLike(ids);
-    } else {
-        return await deleteLike(ids);
-    }
+    return check === null ? await addLike(ids) : await deleteLike(ids);
 }
 
 async function findLike(ids) {
@@ -114,7 +103,7 @@ export async function findLikes(userId) {
                 attributes: ["nickname"]
             }
         },
-        order: [[Posts, "likes", "DESC"]]
+        order: [[Posts, "likes", "DESC"], [Posts, "updatedAt", "DESC"]]
     });
 }
 

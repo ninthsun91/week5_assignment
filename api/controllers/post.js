@@ -10,7 +10,7 @@ export async function createOne(req, res, next) {
     const { userId } = req.app.locals.user;
     const post = {
         userId, title, content
-    }
+    };
 
     try {
         await Post.createOne(post);
@@ -21,7 +21,7 @@ export async function createOne(req, res, next) {
         
     } catch (error) {
         console.error(error);
-        res.status(500).json({
+        res.status(400).json({
             message: error.message
         });
     }
@@ -69,6 +69,7 @@ export async function findOne(req, res, next) {
             message: error.message
         });
     }
+
     res.status(200).json({
         data: {
             postId: post.postId,
@@ -87,19 +88,25 @@ export async function updateOne(req, res, next) {
 
     try {
         const { title, content }
-            = await joi.postEditSchema.validateAsync(req.body);
+            = await joi.postSchema.validateAsync(req.body);
         const post = {
             postId: req.params.postId,
             userId: req.app.locals.user,
             title, content
-        }
+        };
 
         const result = await Post.updateOne(post);
         switch (result[0]) {
             case null:
-                throw new Error("수정 권한이 없습니다");
+                const authError = new Error("수정 권한이 없습니다");
+                return res.status(401).json({
+                    message: authError.message
+                });
             case 0:
-                throw new Error("INTERNAL UPDATE FAILURE");
+                const internalError = new Error("INTERNAL UPDATE FAILURE");
+                return res.status(500).json({
+                    message: internalError.message
+                });
         }
 
         res.status(200).json({
@@ -122,9 +129,15 @@ export async function deleteOne(req, res, next) {
         const result = await Post.deleteOne({ userId, postId });
         switch (result) {
             case null:
-                throw new Error("삭제 권한이 없습니다.");
+                const authError = new Error("삭제 권한이 없습니다.");
+                return res.status(401).json({
+                    message: authError.message
+                });
             case 0:
-                throw new Error("INTERNAL DELETE FAILURE");
+                const internalError = new Error("INTERNAL DELETE FAILURE");
+                return res.status(500).json({
+                    message: internalError.message
+                });
         }
     
         res.status(200).json({
@@ -167,6 +180,7 @@ export async function likeList(req, res, next) {
     console.log("POST CONTROLLER LIKELIST");
 
     const { userId } = req.app.locals.user;
+    
     const likeList = await Post.findLikes(userId);
     const data = likeList.map((like)=>{
         return {

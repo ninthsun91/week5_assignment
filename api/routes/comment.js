@@ -1,20 +1,22 @@
 import { Router } from "express";
 import * as Comment from "../controllers/comment.js";
-import { authMiddleware, tempAuth } from "../../middlewares/auth.js";
+import { authMiddleware } from "../../middlewares/auth.js";
 
 
 const router = Router();
 
 
 /**
+ * CREATE COMMENT
+ * request header: { Authorization: "Bearer accessToken", Refreshtoken: "refreshToken" }
  * request: { comment }
  * response: { message }
- * auth
  */
-router.post("/:postId", tempAuth, Comment.createOne);
+router.post("/:postId", authMiddleware, Comment.createOne);
 
 
 /**
+ * COMMENT LIST BY POSTID
  * request: 
  * response: { data: [...{ commentId, userId, nickname, comment, 
  *                              createdAt, updatedAt }]}
@@ -23,19 +25,21 @@ router.get("/:postId", Comment.getCommentList);
 
 
 /**
+ * UPDATE COMMENT
+ * request header: { Authorization: "Bearer accessToken", Refreshtoken: "refreshToken" }
  * request: { comment }
  * response: { message }
- * auth
  */
-router.put("/:commentId", tempAuth, Comment.updateOne);
+router.put("/:commentId", authMiddleware, Comment.updateOne);
 
 
 /**
+ * DELETE COMMENT
+ * request header: { Authorization: "Bearer accessToken", Refreshtoken: "refreshToken" }
  * request: 
  * response: { message }
- * auth
  */
-router.delete("/:commentId", tempAuth, Comment.deleteOne);
+router.delete("/:commentId", authMiddleware, Comment.deleteOne);
 
 
 export default router;

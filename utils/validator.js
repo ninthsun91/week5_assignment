@@ -19,24 +19,11 @@ export default {
                 "string.empty": "게시글 내용을 입력해주세요."
             }),
     }),
-    postEditSchema: Joi.object({
-        title: Joi.string().required(),
-        content: Joi.string().required()
-            .messages({
-                "string.empty": "게시글 내용을 입력해주세요."
-            }),
-    }),
     
     commentSchema: Joi.object({
         comment: Joi.string().required()
             .messages({
                 "string.empty": "댓글 내용을 입력해주세요."
             }),
-    }),
-    commentEditSchema: Joi.object({
-        comment: Joi.string().required()
-        .messages({
-            "string.empty": "댓글 내용을 입력해주세요."
-        }),
     }),
 }

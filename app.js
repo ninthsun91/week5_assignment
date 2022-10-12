@@ -11,7 +11,7 @@ const PORT = env.PORT;
 
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
     resave: true,

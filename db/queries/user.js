@@ -1,7 +1,7 @@
 import { models } from "../config.js";
 import { Op } from "sequelize";
 
-const { Users, Posts, Comments, Likes } = models;
+const { Users } = models;
 
 
 export async function findOne(ID) {

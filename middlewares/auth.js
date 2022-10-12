@@ -3,27 +3,21 @@ import jwt from "../utils/jwt.js";
 
 export function authMiddleware(req, res, next) {
     console.log("AUTHMIDDLEWARE");
-    console.log(req.session);
 
     const invalidError = new Error("로그인이 필요한 기능입니다.");
     try {
         const { authorization, refreshtoken } = req.headers;
-        if (authorization === undefined) {
-            throw invalidError;
-        }
+        if (authorization === undefined) throw invalidError;
+
         const [tokenType, accessToken] = authorization.split(" ");
-        if (tokenType !== "Bearer") {
-            throw invalidError;
-        }
+        if (tokenType !== "Bearer") throw invalidError;
     
         const payload = jwt.verify(accessToken);
         if (payload === null) {
             console.log("INVALID ACCESSTOKEN");
     
             const refreshCheck = jwt.refreshVerify(refreshtoken);
-            if (refreshCheck === null) {
-                throw invalidError;
-            }
+            if (refreshCheck === null) throw invalidError;
 
             const payload = req.session[refreshtoken];
             req.app.locals.user = payload;
@@ -33,6 +27,7 @@ export function authMiddleware(req, res, next) {
             return next();
         } else {
             console.log("VALID ACCESSTOKEN");
+
             req.app.locals.user = payload;
             res.set("Authorization", "Bearer "+ accessToken);
             return next();
@@ -49,6 +44,7 @@ export function tokenChecker(req, res, next) {
     console.log("TOKENCHECKER");
         
     const { authorization, refreshtoken } = req.headers;
+    
     if (authorization && refreshtoken) {
         const error = new Error("이미 로그인이 되어있습니다.");
         return res.status(400).json({

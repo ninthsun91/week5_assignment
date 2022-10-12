@@ -1,5 +1,4 @@
-import { DataTypes, Model } from "sequelize";
-// import sequelize from "../config.js";
+import { DataTypes } from "sequelize";
 
 
 export default function Posts(sequelize) {
@@ -35,52 +34,3 @@ export default function Posts(sequelize) {
         paranoid: false,
     });
 }
-
-
-// class Posts extends Model {
-//     static associate(models) {
-//         this.belongsTo(models.Users, {
-//             foreignKey: "userId",
-//         });
-//         this.hasMany(models.Comments, {
-//             as: "Comments",
-//             foreignKey: "postId",
-//         });
-//         this.hasMany(models.Likes, {
-//             as: "Likes",
-//             foreignKey: "postId",
-//         });
-//     }
-// };
-
-// Posts.init({
-//     postId: {
-//         type: DataTypes.SMALLINT.UNSIGNED,
-//         autoIncrement: true,
-//         primaryKey: true,
-//     },
-//     userId: {
-//         type: DataTypes.SMALLINT.UNSIGNED,
-//         references: {
-//             model: "Users",
-//             key: "userId",
-//         },
-//         onDelete: "cascade"
-//     },
-//     title: {
-//         type: DataTypes.TEXT("tiny"),
-//         allowNull: false,
-//     },
-//     content: {
-//         type: DataTypes.TEXT("medium"),
-//         allowNull: false,
-//     },
-// }, {
-//     sequelize,
-//     modelName: "Posts",
-//     timestamps: true,
-//     paranoid: false,
-// });
-
-
-// export default Posts;

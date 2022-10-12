@@ -1,15 +1,11 @@
 import { models } from "../config.js";
 
-const { Users, Posts, Comments, Likes } = models;
+const { Users, Comments } = models;
 
 
 export async function createOne(comment) {
     console.log("COMMENT CREATEONE");
-    const result = await Comments.create(comment);
-    return {
-        comment: result.get(),
-        isNewRecord: result._options.isNewRecord
-    }
+    await Comments.create(comment);
 }
 
 export async function findOne(commentId) {

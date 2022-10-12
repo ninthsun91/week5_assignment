@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as Comment from "../controllers/comment.js";
-import { tempAuth } from "../../middlewares/auth.js";
+import { authMiddleware, tempAuth } from "../../middlewares/auth.js";
 
 
 const router = Router();

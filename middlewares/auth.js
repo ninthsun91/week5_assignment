@@ -4,7 +4,7 @@ import jwt from "../utils/jwt.js";
 export function authMiddleware(req, res, next) {
     console.log("AUTHMIDDLEWARE");
 
-    const invalidError = new Error("로그인이 필요합니다.");
+    const invalidError = new Error("로그인이 필요한 기능입니다.");
     try {
         const { authorization, refreshtoken } = req.headers;
         if (authorization === undefined) {
@@ -27,7 +27,7 @@ export function authMiddleware(req, res, next) {
             const payload = req.session[refreshtoken];
             const newAccessToken = jwt.sign(JSON.parse(payload));
     
-            res.locals.user = payload;
+            req.app.locals.user = payload;
             res.set("Authorization", "Bearer "+ newAccessToken);
             return next();
         } else {
@@ -37,7 +37,7 @@ export function authMiddleware(req, res, next) {
         }
         
     } catch (error) {
-        res.status(400).json({
+        res.status(401).json({
             message: error.message
         });
     }
@@ -45,14 +45,15 @@ export function authMiddleware(req, res, next) {
 
 export function tokenChecker(req, res, next) {
     console.log("TOKENCHECKER");
-
+        
     const { authorization, refreshtoken } = req.headers;
-    if ( authorization && refreshtoken ) {
+    if (authorization && refreshtoken) {
         const error = new Error("이미 로그인이 되어있습니다.");
         return res.status(400).json({
             message: error.message
         });
     }
+
     return next();
 }
 

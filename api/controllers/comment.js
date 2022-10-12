@@ -30,24 +30,34 @@ export async function getCommentList(req, res, next) {
     console.log("GET COMMENTLIST BY POSTID");
     const { postId } = req.params;
     const commentList = await Comment.findAll(postId);
-
-    res.status(200).json({
-        data: commentList,
+    const data = commentList.map((comment)=>{
+        return {
+            commentId: comment.commentId,
+            userId: comment.userId,
+            nickname: comment.User.nickname,
+            comment: comment.comment,
+            createdAt: comment.createdAt,
+            updatedAt: comment.updatedAt,
+        };
     });
+
+    res.status(200).json({ data });
 }
 
 export async function updateOne(req, res, next) {
     console.log("CONTROLLER UPDATEONE");
     try {
+        const { userId } = req.app.locals.user;
         const { commentId } = req.params;
         const { comment }
             = await joi.commentEditSchema.validateAsync(req.body);
         
-        const result = await Comment.updateOne({ 
-            commentId, comment 
-        });
-        if (result[0] === 0) {
-            throw new Error("UPDATE FAIL");
+        const result = await Comment.updateOne({ commentId, userId, comment });
+        switch (result[0]) {
+            case null:
+                throw new Error("수정 권한이 없습니다.");
+            case 0:
+                throw new Error("INTERNAL UPDATE FAIL");
         }
     
         res.status(200).json({
@@ -64,13 +74,16 @@ export async function updateOne(req, res, next) {
 export async function deleteOne(req, res, next) {
     console.log("CONTROLLER DELETEONE");
     try {
+        const { userId } = req.app.locals.user;
         const { commentId } = req.params;
         console.log(commentId);
         
-        const result = await Comment.deleteOne(commentId);
-        console.log(result);
-        if (result === 0) {
-            throw new Error("DELETE FAIL");
+        const result = await Comment.deleteOne({ userId, commentId });
+        switch (result[0]) {
+            case null:
+                throw new Error("삭제 권한이 없습니다.");
+            case 0:
+                throw new Error("INTERNAL DELETE FAIL");
         }
     
         res.status(200).json({

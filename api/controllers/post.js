@@ -30,8 +30,21 @@ export async function createOne(req, res, next) {
 export async function findAll(req, res, next) {
     console.log("POST CONTROLLER FINDALL");
     try {
+        const postList = await Post.findAll();
+        const data = postList.map((post)=>{
+            return {
+                postId: post.postId,
+                userId: post.userId,
+                nickname: post.User.nickname,
+                title: post.title,
+                createdAt: post.createdAt,
+                updatedAt: post.updatedAt,
+                likes: 0,
+            };
+        });
+
         res.status(200).json({
-            data: await Post.findAll()
+            data
         });
         
     } catch (error) {
@@ -55,7 +68,16 @@ export async function findOne(req, res, next) {
         });
     }
     res.status(200).json({
-        data: post
+        data: {
+            postId: post.postId,
+            userId: post.userId,
+            nickname: post.User.nickname,
+            title: post.title,
+            content: post.content,
+            createdAt: post.createdAt,
+            updatedAt: post.updatedAt,
+            likes: 0,
+        }
     });
 }
 

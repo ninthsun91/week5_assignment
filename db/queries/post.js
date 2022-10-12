@@ -16,14 +16,22 @@ export async function createOne(post) {
 export async function findAll() {
     console.log("POST FINDALL");
     return await Posts.findAll({
-        order: [["createdAt", "DESC"]],
-        include: [Users]
+        order: [["createdAt", "DESC"], ["postId", "DESC"]],
+        include: {
+            model: Users,
+            attributes: ["nickname"]
+        }
     });
 }
 
 export async function findOne(postId) {
     console.log("POST FINDONE");
-    return await Posts.findByPk(postId);
+    return await Posts.findByPk(postId, {
+        include: {
+            model: Users,
+            attributes: ["nickname"]
+        }
+    });
 }
 
 export async function updateOne(post) {

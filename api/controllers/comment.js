@@ -3,7 +3,6 @@ import joi from "../../utils/validator.js";
 
 
 export async function createOne(req, res, next) {
-    console.log("CONTROLLER CREATEONE");
     try {
         const { comment }
             = await joi.commentSchema.validateAsync(req.body);
@@ -28,8 +27,6 @@ export async function createOne(req, res, next) {
 }
 
 export async function getCommentList(req, res, next) {
-    console.log("GET COMMENTLIST BY POSTID");
-
     const { postId } = req.params;
     
     const commentList = await Comment.findAll(postId);
@@ -48,7 +45,6 @@ export async function getCommentList(req, res, next) {
 }
 
 export async function updateOne(req, res, next) {
-    console.log("CONTROLLER UPDATEONE");
     try {
         const { userId } = req.app.locals.user;
         const { commentId } = req.params;
@@ -75,7 +71,6 @@ export async function updateOne(req, res, next) {
 }
 
 export async function deleteOne(req, res, next) {
-    console.log("CONTROLLER DELETEONE");
     try {
         const { userId } = req.app.locals.user;
         const { commentId } = req.params;

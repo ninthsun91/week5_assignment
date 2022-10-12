@@ -5,7 +5,6 @@ const { Users } = models;
 
 
 export async function findOne(ID) {
-    console.log("USER FINDONE");
     const result = await Users.findOne({
         where: { 
             [Op.or]: [
@@ -18,7 +17,6 @@ export async function findOne(ID) {
 }
 
 export async function createOne(user) {
-    console.log("USER CREATEONE");
     try {
         console.log("TRY");
         const result = await Users.create(user);

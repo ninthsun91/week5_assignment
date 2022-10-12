@@ -6,15 +6,12 @@ import env from "../../config.env.js";
 
 
 export async function signup(req, res, next) {
-    console.log("USER SIGNUP");
-
     try {
         const { nickname, password, confirm } 
             = await joi.signupSchema.validateAsync(req.body);
 
-        if (password.includes(nickname) || password !== confirm) {
-            throw new Error("INVALID PASSWORD");
-        }
+        if (password.includes(nickname)) throw new Error("닉네임을 비밀번호에 쓸 수 없습니다.");
+        if (password !== confirm) throw new Error("비밀번호가 일치하지 않습니다.");
 
         const user = {
             nickname,
@@ -37,8 +34,6 @@ export async function signup(req, res, next) {
 }
 
 export async function singin(req, res, next) {
-    console.log("USER SIGNIN");
-
     try {
         const { nickname, password } 
             = await joi.signinSchema.validateAsync(req.body);

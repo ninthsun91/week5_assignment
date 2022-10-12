@@ -3,8 +3,6 @@ import joi from "../../utils/validator.js";
 
 
 export async function createOne(req, res, next) {
-    console.log("POST CONTROLLER CREATEONE");
-
     const { title, content } 
         = await joi.postSchema.validateAsync(req.body);
     const { userId } = req.app.locals.user;
@@ -28,7 +26,6 @@ export async function createOne(req, res, next) {
 }
 
 export async function findAll(req, res, next) {
-    console.log("POST CONTROLLER FINDALL");
     try {
         const postList = await Post.findAll();
         const data = postList.map((post)=>{
@@ -56,8 +53,6 @@ export async function findAll(req, res, next) {
 }
 
 export async function findOne(req, res, next) {
-    console.log("POST CONTROLLER FINDONE");
-    
     if (req.path === "/like") return next();
 
     const { postId } = req.params;
@@ -84,14 +79,12 @@ export async function findOne(req, res, next) {
 }
 
 export async function updateOne(req, res, next) {
-    console.log("POST CONTROLLER UPDATEONE");
-
     try {
         const { title, content }
             = await joi.postSchema.validateAsync(req.body);
         const post = {
             postId: req.params.postId,
-            userId: req.app.locals.user,
+            userId: req.app.locals.user.userId,
             title, content
         };
 
@@ -121,7 +114,6 @@ export async function updateOne(req, res, next) {
 }
 
 export async function deleteOne(req, res, next) {
-    console.log("POST CONTROLLER DELETEONE");
     const { userId } = req.app.locals.user;
     const { postId } = req.params;
     
@@ -152,7 +144,6 @@ export async function deleteOne(req, res, next) {
 }
 
 export async function toggleLike(req, res, next) {
-    console.log("POST CONTROLLER TOGGLELIKE");
 
     const { postId } = req.params;
     const { userId } = req.app.locals.user;
@@ -177,8 +168,6 @@ export async function toggleLike(req, res, next) {
 }
 
 export async function likeList(req, res, next) {
-    console.log("POST CONTROLLER LIKELIST");
-
     const { userId } = req.app.locals.user;
     
     const likeList = await Post.findLikes(userId);

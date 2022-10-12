@@ -2,9 +2,8 @@ import jwt from "../utils/jwt.js";
 
 
 export function authMiddleware(req, res, next) {
-    console.log("AUTHMIDDLEWARE");
-
     const invalidError = new Error("로그인이 필요한 기능입니다.");
+
     try {
         const { authorization, refreshtoken } = req.headers;
         if (authorization === undefined) throw invalidError;
@@ -20,6 +19,8 @@ export function authMiddleware(req, res, next) {
             if (refreshCheck === null) throw invalidError;
 
             const payload = req.session[refreshtoken];
+            if (payload === undefined) throw invalidError;
+
             req.app.locals.user = payload;
             const newAccessToken = jwt.sign(JSON.parse(payload));
 
@@ -41,8 +42,6 @@ export function authMiddleware(req, res, next) {
 }
 
 export function tokenChecker(req, res, next) {
-    console.log("TOKENCHECKER");
-        
     const { authorization, refreshtoken } = req.headers;
     
     if (authorization && refreshtoken) {

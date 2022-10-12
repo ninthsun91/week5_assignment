@@ -35,6 +35,7 @@ export async function findAll(req, res, next) {
         });
         
     } catch (error) {
+        console.error(error);
         res.status(500).json({
             message: error.message
         });

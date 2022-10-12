@@ -1,49 +1,74 @@
-import { DataTypes, Model } from "sequelize";
-import sequelize from "../config.js";
+import { DataTypes } from "sequelize";
 
 
-class Like extends Model {
-    static associate(models) {
-        this.belongsTo(models.Users, {
-            foreignKey: "userId",
-        });
-        this.belongsTo(models.Posts, {
-            foreignKey: "postId",
-        });
-    }
-};
-
-Like.init({
-    likeId: {
-        type: DataTypes.SMALLINT.UNSIGNED,
-        autoIncrement: true,
-        primaryKey: true,
-    },
-    postId: {
-        type: DataTypes.SMALLINT.UNSIGNED,
-        references: {
-            model: "Posts",
-            key: "postId",
+export default function Likes(sequelize) {
+    sequelize.define("Likes", {
+        likeId: {
+            type: DataTypes.SMALLINT.UNSIGNED,
+            autoIncrement: true,
+            primaryKey: true,
         },
-        onDelete: "cascade",
-    },
-    userId: {
-        type: DataTypes.SMALLINT.UNSIGNED,
-        references: {
-            model: "Users",
-            key: "userId",
+        postId: {
+            type: DataTypes.SMALLINT.UNSIGNED,
+            references: {
+                model: "Posts",
+                key: "postId",
+            },
+            onDelete: "cascade",
         },
-        onDelete: "cascade",
-    },
-}, {
-    sequelize,
-    modelName: "Like",
-});
+        userId: {
+            type: DataTypes.SMALLINT.UNSIGNED,
+            references: {
+                model: "Users",
+                key: "userId",
+            },
+            onDelete: "cascade",
+        },
+    });
+}
 
-// (async()=>{
-//     console.log("SYNC LIKE");
-//     await Like.sync();
+// import { DataTypes, Model } from "sequelize";
+// import sequelize from "../config.js";
+
+
+// class Likes extends Model {
+//     static associate(models) {
+//         this.belongsTo(models.Users, {
+//             foreignKey: "userId",
+//         });
+//         this.belongsTo(models.Posts, {
+//             foreignKey: "postId",
+//         });
+//     }
+// };
+
+// Likes.init({
+//     likeId: {
+//         type: DataTypes.SMALLINT.UNSIGNED,
+//         autoIncrement: true,
+//         primaryKey: true,
+//     },
+//     postId: {
+//         type: DataTypes.SMALLINT.UNSIGNED,
+//         references: {
+//             model: "Posts",
+//             key: "postId",
+//         },
+//         onDelete: "cascade",
+//     },
+//     userId: {
+//         type: DataTypes.SMALLINT.UNSIGNED,
+//         references: {
+//             model: "Users",
+//             key: "userId",
+//         },
+//         onDelete: "cascade",
+//     },
+// }, {
+//     sequelize,
+//     modelName: "Likes",
 // });
 
 
-export default Like;
+
+// export default Likes;

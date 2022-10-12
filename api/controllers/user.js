@@ -24,6 +24,10 @@ export async function signup(req, res, next) {
         }
         const result = await User.createOne(user);
 
+        if (result instanceof Error) {
+            console.error(result);
+            throw result;
+        }
         if (result.isNewRecord === false) {
             throw new Error("중복된 닉네임입니다.");
         }

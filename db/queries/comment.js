@@ -1,10 +1,11 @@
-import CommentModel from "../models/comment.js";
-import UserModel from "../models/user.js";
+import { models } from "../config.js";
+
+const { Users, Posts, Comments, Likes } = models;
 
 
 export async function createOne(comment) {
     console.log("COMMENT CREATEONE");
-    const result = await CommentModel.create(comment);
+    const result = await Comments.create(comment);
     return {
         comment: result.get(),
         isNewRecord: result._options.isNewRecord
@@ -13,12 +14,12 @@ export async function createOne(comment) {
 
 export async function findOne(commentId) {
     console.log("COMMENT FINDONE");
-    return CommentModel.findByPk(commentId);
+    return Comments.findByPk(commentId);
 }
 
 export async function findAll(postId) {
     console.log("COMMENT FINDALL");
-    return await CommentModel.findAll({
+    return await Comments.findAll({
         where: { postId },
         attributes: {
             exclude: ["postId", "deletedAt"]
@@ -29,7 +30,7 @@ export async function findAll(postId) {
 
 export async function updateOne(comment) {
     console.log("COMMENT UPDATEONE");
-    return await CommentModel.update({
+    return await Comments.update({
         comment: comment.comment
     }, {
         where: { commentId: comment.commentId }
@@ -38,7 +39,7 @@ export async function updateOne(comment) {
 
 export async function deleteOne(commentId) {
     console.log("COMMENT DELETEONE");
-    return await CommentModel.destroy({
+    return await Comments.destroy({
         where: { commentId }
     });
 }

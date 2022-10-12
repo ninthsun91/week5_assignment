@@ -1,11 +1,12 @@
-// import sequelize from "../config.js";
-import UserModel from "../models/user.js";
+import { models } from "../config.js";
 import { Op } from "sequelize";
+
+const { Users, Posts, Comments, Likes } = models;
 
 
 export async function findOne(ID) {
     console.log("USER FINDONE");
-    const result = await UserModel.findOne({
+    const result = await Users.findOne({
         where: { 
             [Op.or]: [
                 { userId: ID },
@@ -19,7 +20,9 @@ export async function findOne(ID) {
 export async function createOne(user) {
     console.log("USER CREATEONE");
     try {
-        const result = await UserModel.create(user);
+        console.log("TRY");
+        const result = await Users.create(user);
+        console.log("SUCCESS");
         return {
             user: result.get(),
             isNewRecord: result._options.isNewRecord,

@@ -3,7 +3,7 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 
 import env from "./config.env.js";
-import sequelizeConnection from "./db/config.js";
+import sequelize from "./db/config.js";
 import router from "./api/routes/index.js";
 
 const app = express();
@@ -32,7 +32,7 @@ app.use((req, res, next)=>{
 
 
 try {
-    await sequelizeConnection.authenticate();
+    await sequelize.authenticate();
     
     app.listen(PORT, ()=>{
         console.log(`SERVER RUNNING ON PORT ${PORT}`);

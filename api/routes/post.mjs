@@ -1,6 +1,6 @@
 import { Router } from "express";
 import PostController from "../controllers/post.mjs";
-import { authMiddleware } from "../../middlewares/auth.mjs";
+import auth from "../../middlewares/auth.mjs";
 
 
 const router = Router();
@@ -13,7 +13,7 @@ const Post = new PostController();
  * request: { title, content }
  * response: { message }
  */
-router.post("/", authMiddleware, Post.createOne);
+router.post("/", auth.authMiddleware, Post.createOne);
 
 
 /**
@@ -40,7 +40,7 @@ router.get("/:postId", Post.findOne);
  * request: { title, content }
  * response: { message }
  */
-router.put("/:postId", authMiddleware, Post.updateOne);
+router.put("/:postId", auth.authMiddleware, Post.updateOne);
 
 
 /**
@@ -49,7 +49,7 @@ router.put("/:postId", authMiddleware, Post.updateOne);
  * request: 
  * response: { message }
  */
-router.delete("/:postId", authMiddleware, Post.deleteOne);
+router.delete("/:postId", auth.authMiddleware, Post.deleteOne);
 
 
 /**
@@ -59,7 +59,7 @@ router.delete("/:postId", authMiddleware, Post.deleteOne);
  * response: { data: [...{ postId, userId, nickname, title, 
  *                              createdAt, updatedAt, likes(:int) }] }
  */
-router.get("/like", authMiddleware, Post.likeList);
+router.get("/like", auth.authMiddleware, Post.likeList);
 
 
 /**
@@ -68,7 +68,7 @@ router.get("/like", authMiddleware, Post.likeList);
  * request: 
  * response: { message }
  */
-router.get("/:postId/like", authMiddleware, Post.toggleLike)
+router.get("/:postId/like", auth.authMiddleware, Post.toggleLike)
 
 
 export default router;

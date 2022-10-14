@@ -1,6 +1,6 @@
 import { Router } from "express";
 import UserController from "../controllers/user.mjs";
-import { tokenChecker } from "../../middlewares/auth.mjs";
+import auth from "../../middlewares/auth.mjs";
 
 
 const router = Router();
@@ -11,7 +11,7 @@ const User = new UserController();
  * response: { message }
  * tokenChecker
  */
-router.post("/signup", tokenChecker, User.signup);
+router.post("/signup", auth.tokenChecker, User.signup);
 
 
 /**
@@ -19,7 +19,7 @@ router.post("/signup", tokenChecker, User.signup);
  * response: { message }    // header: { accessToken, refreshToken }
  * tokenChecker
  */
-router.post("/login", tokenChecker, User.singin);
+router.post("/login", auth.tokenChecker, User.singin);
 
 
 export default router;

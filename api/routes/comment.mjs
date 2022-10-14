@@ -1,6 +1,6 @@
 import { Router } from "express";
 import CommentController from "../controllers/comment.mjs";
-import { authMiddleware } from "../../middlewares/auth.mjs";
+import auth from "../../middlewares/auth.mjs";
 
 
 const router = Router();
@@ -12,7 +12,7 @@ const Comment = new CommentController();
  * request: { comment }
  * response: { message }
  */
-router.post("/:postId", authMiddleware, Comment.createOne);
+router.post("/:postId", auth.authMiddleware, Comment.createOne);
 
 
 /**
@@ -30,7 +30,7 @@ router.get("/:postId", Comment.getCommentList);
  * request: { comment }
  * response: { message }
  */
-router.put("/:commentId", authMiddleware, Comment.updateOne);
+router.put("/:commentId", auth.authMiddleware, Comment.updateOne);
 
 
 /**
@@ -39,7 +39,7 @@ router.put("/:commentId", authMiddleware, Comment.updateOne);
  * request: 
  * response: { message }
  */
-router.delete("/:commentId", authMiddleware, Comment.deleteOne);
+router.delete("/:commentId", auth.authMiddleware, Comment.deleteOne);
 
 
 export default router;

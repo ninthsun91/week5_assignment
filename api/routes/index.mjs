@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { sync } from "../controllers/index.js";
+import { sync } from "../controllers/index.mjs";
 
-import userRouter from "./user.js";
-import postRouter from "./post.js";
-import commentRouter from "./comment.js";
+import userRouter from "./user.mjs";
+import postRouter from "./post.mjs";
+import commentRouter from "./comment.mjs";
 
 
 const router = Router();

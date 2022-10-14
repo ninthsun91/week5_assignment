@@ -1,4 +1,4 @@
-import { syncTables } from "../../db/queries/manage.js";
+import { syncTables } from "../../database/repositories/manage.mjs";
 
 export async function sync(req, res, next) {
     try {

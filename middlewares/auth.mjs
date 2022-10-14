@@ -1,4 +1,4 @@
-import jwt from "../utils/jwt.js";
+import jwt from "../utils/jwt.mjs";
 
 
 export function authMiddleware(req, res, next) {

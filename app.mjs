@@ -2,9 +2,9 @@ import express from "express";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 
-import env from "./config.env.js";
-import sequelize from "./db/config.js";
-import router from "./api/routes/index.js";
+import env from "./config.env.mjs";
+import sequelize from "./database/config.mjs";
+import router from "./api/routes/index.mjs";
 
 const app = express();
 const PORT = env.PORT;

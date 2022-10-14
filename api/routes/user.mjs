@@ -1,9 +1,10 @@
 import { Router } from "express";
-import * as User from "../controllers/user.js";
-import { tokenChecker } from "../../middlewares/auth.js";
+import UserController from "../controllers/user.mjs";
+import { tokenChecker } from "../../middlewares/auth.mjs";
 
 
 const router = Router();
+const User = new UserController();
 
 /**
  * request: { nickname, password, confirm }

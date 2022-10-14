@@ -2,7 +2,7 @@
  * SEQUELIZE CONNECTION
  */
 import { Sequelize } from "sequelize";
-import env from "../config.env.js";
+import env from "../config.env.mjs";
 
 const sequelize = new Sequelize(
     env.DB_NAME,
@@ -21,11 +21,11 @@ export default sequelize
 /**
  * MODEL DEFINITION & ASSOCIATION
  */
-import Users from "./models/user.js";
-import Posts from "./models/post.js";
-import Comments from "./models/comment.js";
-import Likes from "./models/like.js";
-import associateModels from "./association.js";
+import Users from "./models/user.mjs";
+import Posts from "./models/post.mjs";
+import Comments from "./models/comment.mjs";
+import Likes from "./models/like.mjs";
+import associateModels from "./association.mjs";
 
 const modelDefiners = [
     Users, Posts, Comments, Likes

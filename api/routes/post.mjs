@@ -1,9 +1,10 @@
 import { Router } from "express";
-import * as Post from "../controllers/post.js";
-import { authMiddleware, tempAuth } from "../../middlewares/auth.js";
+import PostController from "../controllers/post.mjs";
+import { authMiddleware } from "../../middlewares/auth.mjs";
 
 
 const router = Router();
+const Post = new PostController();
 
 
 /**

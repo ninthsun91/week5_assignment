@@ -33,6 +33,6 @@ export default {
         const check = await Comment.findOne(ids.commentId);
 
         if (check === null || (check.get().userId !== ids.userId)) return null;
-        return await Comment.deleteOne(ids.commentId);
+        return await Comment.deleteOne(ids);
     }
 }

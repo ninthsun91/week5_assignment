@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser";
 import env from "./config.env.mjs";
 import sequelize from "./database/config.mjs";
 import router from "./api/routes/index.mjs";
+import associateModels from "./database/association.mjs";
+
 
 const app = express();
 const PORT = env.PORT;
@@ -32,6 +34,7 @@ app.use((req, res, next)=>{
 
 try {
     await sequelize.authenticate();
+    associateModels(sequelize);
     
     app.listen(PORT, ()=>{
         console.log(`SERVER RUNNING ON PORT ${PORT}`);

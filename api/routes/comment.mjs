@@ -1,10 +1,9 @@
 import { Router } from "express";
-import CommentController from "../controllers/comment.mjs";
+import Comment from "../controllers/comment.mjs";
 import auth from "../../middlewares/auth.mjs";
 
 
 const router = Router();
-const Comment = new CommentController();
 
 /**
  * CREATE COMMENT

@@ -2,8 +2,8 @@ import Comment from "../../services/comment.mjs"
 import joi from "../../utils/validator.mjs";
 
 
-export default class CommentController {
-    createOne = async(req, res, next) => {
+export default {
+    createOne: async(req, res, next) => {
         try {
             const { comment }
                 = await joi.commentSchema.validateAsync(req.body);
@@ -24,17 +24,17 @@ export default class CommentController {
                 message: error.message
             });
         }    
-    }
+    },
     
-    getCommentList = async(req, res, next) => {
+    getCommentList: async(req, res, next) => {
         const { postId } = req.params;
         
         res.status(200).json({
             data: await Comment.findAll(postId)
         });
-    }
+    },
     
-    updateOne = async(req, res, next) => {
+    updateOne: async(req, res, next) => {
         try {
             const { userId } = req.app.locals.user;
             const { commentId } = req.params;
@@ -58,9 +58,9 @@ export default class CommentController {
                 message: error.message,
             });
         }
-    }
+    },
     
-    deleteOne = async(req, res, next) => {
+    deleteOne: async(req, res, next) => {
         try {
             const { userId } = req.app.locals.user;
             const { commentId } = req.params;

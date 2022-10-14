@@ -4,7 +4,7 @@ import PostRepository from "../database/repositories/post.mjs";
 export default class PostService {
     Post = new PostRepository();
 
-    createPost = async(post) => {
+    createOne = async(post) => {
         return await this.Post.createOne(post);
     }
 

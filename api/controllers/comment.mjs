@@ -1,10 +1,8 @@
-import CommentRepository from "../../database/repositories/comment.mjs";
+import Comment from "../../services/comment.mjs"
 import joi from "../../utils/validator.mjs";
 
 
 export default class CommentController {
-    Comment = new CommentRepository();
-    
     createOne = async(req, res, next) => {
         try {
             const { comment }
@@ -31,19 +29,9 @@ export default class CommentController {
     getCommentList = async(req, res, next) => {
         const { postId } = req.params;
         
-        const commentList = await Comment.findAll(postId);
-        const data = commentList.map((comment)=>{
-            return {
-                commentId: comment.commentId,
-                userId: comment.userId,
-                nickname: comment.User.nickname,
-                comment: comment.comment,
-                createdAt: comment.createdAt,
-                updatedAt: comment.updatedAt,
-            };
+        res.status(200).json({
+            data: await Comment.findAll(postId)
         });
-    
-        res.status(200).json({ data });
     }
     
     updateOne = async(req, res, next) => {

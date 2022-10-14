@@ -5,7 +5,6 @@ import UserService from "../../services/user.mjs";
 import env from "../../config.env.mjs";
 
 
-
 export default class UserController {
     User = new UserService();
     
@@ -13,7 +12,7 @@ export default class UserController {
         try {
             const { nickname, password, confirm } 
                 = await joi.signupSchema.validateAsync(req.body);
-    
+
             if (password.includes(nickname)) throw new Error("닉네임을 비밀번호에 쓸 수 없습니다.");
             if (password !== confirm) throw new Error("비밀번호가 일치하지 않습니다.");
     

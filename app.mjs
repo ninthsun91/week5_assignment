@@ -6,7 +6,7 @@ import env from "./config.env.mjs";
 import sequelize from "./database/config.mjs";
 import router from "./api/routes/index.mjs";
 import associateModels from "./database/association.mjs";
-
+//test
 
 const app = express();
 const PORT = env.PORT;

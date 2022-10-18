@@ -3,7 +3,7 @@ import Posts from "../database/models/post.mjs";
 import Comments from "../database/models/comment.mjs";
 import Likes from "../database/models/like.mjs";
 
-export default function associateModels(sequelize) {
+export default function associateModels() {
     Users.hasMany(Posts, {
         as: "Posts",
         foreignKey: "userId"

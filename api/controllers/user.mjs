@@ -53,7 +53,7 @@ export default class UserController {
             const accessToken = jwt.sign(payload);
             const refreshToken = jwt.refresh();
             req.session[refreshToken] = JSON.stringify(payload);
-    
+            res.cookie("tes", "123")
             res.status(200).set({
                 Authorization: "Bearer " + accessToken, 
                 refreshToken

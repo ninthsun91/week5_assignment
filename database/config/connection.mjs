@@ -2,7 +2,7 @@
  * SEQUELIZE CONNECTION
  */
 import { Sequelize } from "sequelize";
-import env from "../config.env.mjs";
+import env from "../../config.env.mjs";
 
 const sequelize = new Sequelize(
     env.DB_NAME,

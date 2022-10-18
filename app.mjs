@@ -3,10 +3,10 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 
 import env from "./config.env.mjs";
-import sequelize from "./database/config.mjs";
+import sequelize from "./database/config/connection.mjs";
 import router from "./api/routes/index.mjs";
-import associateModels from "./database/association.mjs";
-//test
+import associateModels from "./database/config/association.mjs";
+
 
 const app = express();
 const PORT = env.PORT;
@@ -26,20 +26,15 @@ app.use(session({
 
 app.use("/", router);
 
-app.use((req, res, next)=>{
-    const error = new Error("PAGE NOT FOUND");
-    res.status(404).json({ message: error.message });
+
+app.listen(PORT, async()=>{
+    console.log(`SERVER RUNNING ON PORT ${PORT}`);
+    try {
+        await sequelize.authenticate();
+        associateModels(sequelize);
+        
+    } catch (error) {
+        console.log(`SERVER FAIL: ${error}`);
+        process.exit(0);
+    };    
 });
-
-
-try {
-    await sequelize.authenticate();
-    associateModels(sequelize);
-    
-    app.listen(PORT, ()=>{
-        console.log(`SERVER RUNNING ON PORT ${PORT}`);
-    });    
-} catch (error) {
-    console.log(`SERVER FAIL: ${error}`);
-    process.exit(0);
-}

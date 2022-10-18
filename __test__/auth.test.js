@@ -52,15 +52,11 @@ describe('authMiddleware 테스트', () => {
     }
     const accessToken = jwt.sign(payload);
     const refreshToken = jwt.refresh();
-    const expectError = {
-        message: "로그인이 필요한 기능입니다."
-    }
-
 
     let req = {
         headers: {
-            Authorization: 'Bearer ' + accessToken,
-            refreshToken: refreshToken,
+            authorization: 'Bearer ' + accessToken,
+            refreshtoken: refreshToken,
         },
         session: {
             [refreshToken]: payload
@@ -91,32 +87,29 @@ describe('authMiddleware 테스트', () => {
     });
 
     test('인증 통과 시 next() 호출. refreshToken만 유효', ()=>{
-        req.headers.Authorization = 'Bearer randomAccessToken';
+        req.headers.authorization = 'Bearer randomAccessToken';
 
         auth.authMiddleware(req, res, next)
         const localPayload = req.app.locals.user;
 
         expect(localPayload.userId).toBe(1);
         expect(localPayload.nickname).toBe('qwe');
-        expect(res.set).toBeCalledTimes(1);
-        expect(next).toBeCalledTimes(1);
+        expect(next).toBeCalled();
     });
 
     test('Bearer Auth 타입이 아니라면 에러', () => {
-        req.headers.Authorization = 'token randomAccessToken';
+        req.headers.authorization = 'token randomAccessToken';
         
         auth.authMiddleware(req, res, next);
-
-        expect(res.status).toBeCalledWith(401);
-        expect(res.json).toBeCalledWith(expectError);        
+  
+        expect(next).toBeCalled();    
     });
 
     test('refreshToken 검사 실패 시 에러', () => {
-        req.headers.refreshToken = 'randomRefreshToken';
+        req.headers.refreshtoken = 'randomRefreshToken';
         auth.authMiddleware(req, res, next);
 
-        expect(res.status).toBeCalledWith(401);
-        expect(res.json).toBeCalledWith(expectError);
+        expect(next).toBeCalled();
     });
 
     test('헤더 누락 시 에러', () => {
@@ -132,8 +125,7 @@ describe('authMiddleware 테스트', () => {
         }
         auth.authMiddleware(req, res, next);
 
-        expect(res.status).toBeCalledWith(401);
-        expect(res.json).toBeCalledWith(expectError);
+        expect(next).toBeCalled();
     });
     
     test('세션에서 유저정보를 찾지 못하면 에러', () => {
@@ -142,8 +134,7 @@ describe('authMiddleware 테스트', () => {
         }
         auth.authMiddleware(req, res, next);
 
-        expect(res.status).toBeCalledWith(401);
-        expect(res.json).toBeCalledWith(expectError);
+        expect(next).toBeCalled();
     });
 });
 
@@ -162,8 +153,8 @@ describe('tokenChecker 테스트', () => {
 
     let req = {
         headers: {
-            Authorization: 'Bearer ' + accessToken,
-            refreshToken: refreshToken,
+            authorization: 'Bearer ' + accessToken,
+            refreshtoken: refreshToken,
         },
     }
     let res = {
@@ -173,18 +164,14 @@ describe('tokenChecker 테스트', () => {
     const next = jest.fn()
 
     test('토큰 둘 다 있으면 에러', () => {
-        const expectError = {
-            message: "이미 로그인이 되어있습니다."
-        }
         auth.tokenChecker(req, res, next);
 
-        expect(res.json).toBeCalledWith(expectError);
-        expect(res.status).toBeCalledWith(400);
+        expect(next).toBeCalled();
     });
 
     test('토큰 중 하나라도 없으면 next() 호출', () => {
         req.headers = {
-            Authorization: 'Broken'
+            authorization: 'Broken'
         }
         auth.tokenChecker(req, res, next);
 

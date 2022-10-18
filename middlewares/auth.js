@@ -1,26 +1,29 @@
 import jwt from "../utils/jwt.js";
+import { InvalidAccessError, InternalError } from "../utils/httpException.js";
 
 
 export default {
     authMiddleware: (req, res, next) => {
-        const invalidError = new Error("로그인이 필요한 기능입니다.");
-    
         try {
-            const { Authorization, refreshToken } = req.headers;
-            if (Authorization === undefined) throw invalidError;
+            const { authorization, refreshtoken } = req.headers;
+            if (authorization === undefined) 
+                throw new InvalidAccessError();
     
-            const [tokenType, accessToken] = Authorization.split(" ");
-            if (tokenType !== "Bearer") throw invalidError;
+            const [tokenType, accessToken] = authorization.split(" ");
+            if (tokenType !== "Bearer") 
+                throw new InvalidAccessError();
         
             const payload = jwt.verify(accessToken);
             if (payload === null) {
                 console.log("INVALID ACCESSTOKEN");
 
-                const refreshCheck = jwt.verify(refreshToken);
-                if (refreshCheck === null) throw invalidError;
+                const refreshCheck = jwt.verify(refreshtoken);
+                if (refreshCheck === null) 
+                    throw new InvalidAccessError('유효하지 않은 refreshToken', 401);
                 
-                const payload = req.session[refreshToken];
-                if (payload === undefined) throw invalidError;
+                const payload = req.session[refreshtoken];
+                if (payload === undefined) 
+                    throw new InternalError();
                 
                 req.app.locals.user = payload;
                 const newAccessToken = jwt.sign(JSON.parse(payload));
@@ -34,23 +37,22 @@ export default {
             }
             
         } catch (error) {
-            res.status(401).json({
-                message: error.message
-            });
+            next(error)
         }
     },
     
     tokenChecker: (req, res, next) => {
-        const { Authorization, refreshToken } = req.headers;
+        const { authorization, refreshtoken } = req.headers;
         
-        if (Authorization && refreshToken) {
-            const error = new Error("이미 로그인이 되어있습니다.");
-            return res.status(400).json({
-                message: error.message
-            });
+        try {
+            if (authorization && refreshtoken) {
+                throw new InvalidAccessError('이미 로그인이 되어있습니다.', 400);
+            }
+        
+            return next();
+        } catch (error) {
+            next(error);
         }
-    
-        return next();
     },    
 
     // tempAuth: (req, res, next) => {

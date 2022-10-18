@@ -1,4 +1,4 @@
-import jwt from "../utils/jwt.mjs";
+import jwt from "../utils/jwt.js";
 
 
 export default {
@@ -16,7 +16,7 @@ export default {
             if (payload === null) {
                 console.log("INVALID ACCESSTOKEN");
         
-                const refreshCheck = jwt.refreshVerify(refreshtoken);
+                const refreshCheck = jwt.verify(refreshtoken);
                 if (refreshCheck === null) throw invalidError;
     
                 const payload = req.session[refreshtoken];

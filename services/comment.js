@@ -1,4 +1,4 @@
-import Comment from "../database/repositories/comment.mjs";
+import Comment from "../database/repositories/comment.js";
 
 
 export default {

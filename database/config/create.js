@@ -1,5 +1,5 @@
 import { createConnection } from "mysql2";
-import env from "../../config.env.mjs";
+import env from "../../config.env.js";
 
 
 const connection = createConnection({

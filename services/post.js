@@ -1,4 +1,4 @@
-import PostRepository from "../database/repositories/post.mjs";
+import PostRepository from "../database/repositories/post.js";
 
 
 export default class PostService {

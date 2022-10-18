@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../config.mjs";
+import sequelize from "../config/connection.js";
 
 
 class Likes extends Model {
@@ -42,8 +42,6 @@ Likes.init({
     modelName: "Likes",
 });
 
-
-sequelize.models.Likes
 export default Likes;
 
 // export default function Likes(sequelize) {

@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../config.mjs";
+import sequelize from "../config/connection.js";
 
 
 class Users extends Model {
@@ -41,7 +41,6 @@ Users.init({
     paranoid: true,
 });
 
-sequelize.models.Users;
 export default Users;
 
 

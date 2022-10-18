@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import env from "../config.env.mjs";
+import env from "../config.env.js";
 
 
 export default {
@@ -9,9 +9,9 @@ export default {
             expiresIn: 60*10,
         });
     },
-    verify: (accessToken)=>{
+    verify: (token)=>{
         try {
-            const payload = jwt.verify(accessToken, env.JWT_KEY);
+            const payload = jwt.verify(token, env.JWT_KEY);
             return payload;            
         } catch (error) {
             return null;
@@ -22,8 +22,5 @@ export default {
             algorithm: "HS256",
             expiresIn: 60*60*24,
         });
-    },
-    refreshVerify: function(refreshToken) {
-        return this.verify(refreshToken);
     }
 }

@@ -1,5 +1,5 @@
-import PostService from "../../services/post.mjs";
-import joi from "../../utils/validator.mjs";
+import PostService from "../../services/post.js";
+import joi from "../../utils/validator.js";
 
 
 export default class PostController {

@@ -2,10 +2,10 @@ import express from "express";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 
-import env from "./config.env.mjs";
-import sequelize from "./database/config/connection.mjs";
-import router from "./api/routes/index.mjs";
-import associateModels from "./database/config/association.mjs";
+import env from "./config.env.js";
+import sequelize from "./database/config/connection.js";
+import router from "./api/routes/index.js";
+import associateModels from "./database/config/association.js";
 
 
 const app = express();

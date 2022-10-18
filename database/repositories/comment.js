@@ -1,5 +1,5 @@
-import Users from "../../database/models/user.mjs";
-import Comments from "../../database/models/comment.mjs";
+import Users from "../../database/models/user.js";
+import Comments from "../../database/models/comment.js";
 
 
 export default {

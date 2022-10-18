@@ -1,6 +1,6 @@
-import Users from "../../database/models/user.mjs";
-import Posts from "../../database/models/post.mjs";
-import Likes from "../../database/models/like.mjs";
+import Users from "../../database/models/user.js";
+import Posts from "../../database/models/post.js";
+import Likes from "../../database/models/like.js";
 
 
 export default class PostRepository {

@@ -1,4 +1,4 @@
-import UserRepository from "../database/repositories/user.mjs";
+import UserRepository from "../database/repositories/user.js";
 
 
 export default class UserService {

@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../config.mjs";
+import sequelize from "../config/connection.js";
 
 
 class Comments extends Model {
@@ -48,8 +48,6 @@ Comments.init({
     paranoid: false,
 });
 
-
-sequelize.models.Comments;
 export default Comments;
 
 // export default function Comments(sequelize) {

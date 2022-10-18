@@ -1,13 +1,15 @@
 {
+  "type": "module",
   "name": "assignment",
   "version": "1.0.0",
   "description": "",
-  "main": "app.mjs",
+  "main": "app.js",
   "scripts": {
-    "start": "nodemon app.mjs",
+    "start": "nodemon app.js",
     "test": "jest --detectOpenHandles --forceExit",
-    "create": "node database/config/create.mjs",
-    "migrate": "node database/config/migrate.mjs"
+    "coverage": "jest --coverage",
+    "create": "node database/config/create.js",
+    "migrate": "node database/config/migrate.js"
   },
   "keywords": [],
   "author": "",

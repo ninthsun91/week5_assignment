@@ -1,7 +1,8 @@
-import Users from "../database/models/user.mjs";
-import Posts from "../database/models/post.mjs";
-import Comments from "../database/models/comment.mjs";
-import Likes from "../database/models/like.mjs";
+import Users from "../models/user.js";
+import Posts from "../models/post.js";
+import Comments from "../models/comment.js";
+import Likes from "../models/like.js";
+
 
 export default function associateModels() {
     Users.hasMany(Posts, {

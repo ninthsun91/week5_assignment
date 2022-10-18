@@ -1,8 +1,8 @@
-import sequelize from "./connection.mjs";
-import Users from "../models/user.mjs";
-import Posts from "../models/post.mjs";
-import Comments from "../models/comment.mjs";
-import Likes from "../models/like.mjs";
+import sequelize from "./connection.js";
+import Users from "../models/user.js";
+import Posts from "../models/post.js";
+import Comments from "../models/comment.js";
+import Likes from "../models/like.js";
 
 (async function syncTables() {
     await Likes.drop();

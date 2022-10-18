@@ -1,5 +1,5 @@
-import Comment from "../../services/comment.mjs"
-import joi from "../../utils/validator.mjs";
+import Comment from "../../services/comment.js"
+import joi from "../../utils/validator.js";
 
 
 export default {

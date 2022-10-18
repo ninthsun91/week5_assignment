@@ -1,4 +1,4 @@
-import Users from "../../database/models/user.mjs";
+import Users from "../../database/models/user.js";
 import { Op } from "sequelize";
 
 export default class UserRepository {

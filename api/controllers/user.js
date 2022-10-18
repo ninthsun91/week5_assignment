@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
-import jwt from "../../utils/jwt.mjs";
-import joi from "../../utils/validator.mjs";
-import UserService from "../../services/user.mjs";
-import env from "../../config.env.mjs";
+import jwt from "../../utils/jwt.js";
+import joi from "../../utils/validator.js";
+import UserService from "../../services/user.js";
+import env from "../../config.env.js";
 
 
 export default class UserController {

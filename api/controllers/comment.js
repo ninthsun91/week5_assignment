@@ -41,17 +41,16 @@ export default {
                 = await joi.commentSchema.validateAsync(req.body);
             
             const result = await Comment.updateOne({ commentId, userId, comment });
-            res.json(result);
-            // switch (result[0]) {
-            //     case null:
-            //         throw new InvalidAccessError("수정 권한이 없습니다.", 401);
-            //     case 0:
-            //         throw new InternalError("INTERNAL UPDATE FAILURE");
-            // }
+            switch (result[0]) {
+                case null:
+                    throw new InvalidAccessError("수정 권한이 없습니다.", 401);
+                case 0:
+                    throw new InternalError("INTERNAL UPDATE FAILURE");
+            }
         
-            // res.status(200).json({
-            //     message: "댓글을 수정했습니다."
-            // });
+            res.status(200).json({
+                message: "댓글을 수정했습니다."
+            });
             
         } catch (error) {
             next(error);

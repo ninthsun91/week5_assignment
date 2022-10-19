@@ -48,7 +48,6 @@ describe('Test createOne', () => {
     
 });
 
-
 describe('updateOne test', () => {
     CommentRepo.findOne = jest.fn((commentId)=>{
         if (commentId !== 1) return null
@@ -80,3 +79,76 @@ describe('updateOne test', () => {
         expect(result).toEqual([null]);
     });
 });
+
+describe('Test findAll', ()=>{
+    const postId = 1;
+    CommentRepo.findAll = jest.fn((postId)=>{
+        if (postId !== 1) return [ ];
+        return commentList;
+    });
+
+    test('should return commentList if success', async()=>{
+        const result = await Comment.findAll(postId);
+
+        expect(Array.isArray(result)).toBeTruthy();
+    });
+    test('should return empty list if cannot find postId', async()=>{
+        const result = await Comment.findAll(2);
+
+        expect(result).toEqual([]);
+    });
+});
+
+describe('Test deleteOne', () => {
+    CommentRepo.deleteOne = jest.fn((ids)=>{
+        const { userId, commentId } = ids;
+
+        if (userId===1 && commentId===1) return 1;
+        return null;
+    });
+
+    test('should return 1 if userId, commentId both match', async () => {
+        const result = await Comment.deleteOne({ userId: 1, commentId: 1 });
+
+        expect(result).toBe(1);
+    });
+
+    test('should returnn ull if either userId, commentId does not match', async () => {
+        const result = await Comment.deleteOne({ userId: 1, commentId: 2 });
+
+        expect(result).toBe(null);
+    });
+});
+
+
+const commentList = [
+    { 
+        commentId: 1,
+        userId: 1,
+        comment: 'test comment',
+        createdAt: '2022-10-19',
+        updatedAt: '2022-10-19',
+        User: { nickname: 'jest' }
+    }, { 
+        commentId: 2,
+        userId: 1,
+        comment: 'test comment2',
+        createdAt: '2022-10-19',
+        updatedAt: '2022-10-19',
+        User: { nickname: 'jest' }
+    }, { 
+        commentId: 3,
+        userId: 2,
+        comment: 'test comment3',
+        createdAt: '2022-10-19',
+        updatedAt: '2022-10-19',
+        User: { nickname: 'test' }
+    }, { 
+        commentId: 4,
+        userId: 3,
+        comment: 'test comment4',
+        createdAt: '2022-10-19',
+        updatedAt: '2022-10-19',
+        User: { nickname: 'super' }
+    }
+]

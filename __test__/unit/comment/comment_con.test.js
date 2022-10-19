@@ -1,57 +1,58 @@
-jest.mock('../../../database/models/comment.js');
+jest.mock('../../../services/comment.js', ()=>{
+    return {
+        __esmodule: true,
+        createOne: jest.fn((comment)=>{
+            const keys = Object.keys(comment).length;
+
+            if (keys !== 3) return false;
+            return true;
+        }),
+        findAll: jest.fn((postId)=>{
+            if (postId !== 1) return [ ];
+            return commentList;
+        }),
+        updateOne: jest.fn((comment)=>{
+            const { commentId, userId } = comment;
+
+            if (commentId===1 && userId===1) return [1];
+            return [null];
+        }),
+        deleteOne: jest.fn((ids)=>{
+            const { commentId, userId } = ids;
+
+            if (commentId===1 && userId===1) return 1;
+            return null;
+        }),
+    }
+});
 
 import Comment from '../../../api/controllers/comment.js';
-import Comments from '../../../database/models/comment.js';
+import CommentService from '../../../services/comment.js';
 
-let mockReq = {
-    body: {
-        comment: 'test comment'
-    },
-    params: {
-        postId: 1,
-        commentId: 1,
-    },
-    app: {
-        locals: {
-            user: { userId: 1 }
-        }
-    }
-};
-let mockRes = {
-    status: jest.fn(()=>mockRes),
-    json: jest.fn((arg)=>mockRes.jsonData = arg),
-};
-const mockNext = jest.fn();
-afterEach(()=>{
+let mockReq = {};
+let mockRes = {};
+let mockNext = jest.fn();
+
+beforeEach(()=>{
+    mockReq = {};
     mockRes = {
         status: jest.fn(()=>mockRes),
-        json: jest.fn((arg)=>mockRes.jsonData = arg),
-    };
-    mockReq = {
-        body: {
-            comment: 'test comment'
-        },
-        params: {
-            postId: 1,
-            commentId: 1,
-        },
-        app: {
-            locals: {
-                user: { userId: 1 }
-            }
-        }
-    };
+        json: jest.fn()
+    }
 });
 
 describe('Test createOne', () => {
-    Comments.create = jest.fn((comment)=>{
-        const keys = Object.keys(comment).length;
-
-        if (keys !== 3) return false;
-        return true;
-    });
-
+    
     test('should return status code 200 & json message if data created', async () => {
+        mockReq = {
+            body: { comment: 'test comment' },
+            params: { postId: 1 },
+            app: {
+                locals: {
+                    user: { userId: 1 }
+                }
+            }
+        };
         await Comment.createOne(mockReq, mockRes, mockNext);
 
         expect(mockRes.status).toBeCalledWith(200);
@@ -59,7 +60,15 @@ describe('Test createOne', () => {
     });
 
     test('should call next if wrong comment data is given', async () => {
-        mockReq.body = {};
+        mockReq = {
+            body: { },
+            params: { postId: 1 },
+            app: {
+                locals: {
+                    user: { userId: 1 }
+                }
+            }
+        };
         await Comment.createOne(mockReq, mockRes, mockNext);
 
         expect(mockNext).toBeCalledTimes(1);
@@ -67,17 +76,15 @@ describe('Test createOne', () => {
 });
 
 describe('Test getCommentList', ()=>{
-    Comments.findAll = jest.fn((options)=>{
-        const postId = options.where.postId;
-        switch (postId) {
-            case 1:
-                return commentList;        
-            case 2:
-                return [];
-        }
-    });
 
     test('should return array of comments if success', async()=>{
+        mockReq = {
+            params: { postId: 1 },
+        };
+        mockRes = {
+            status: jest.fn(()=>mockRes),
+            json: jest.fn((val)=>mockRes.jsonData=val)
+        }
         await Comment.getCommentList(mockReq, mockRes, mockNext);
         const { data } = mockRes.jsonData;
 
@@ -88,37 +95,69 @@ describe('Test getCommentList', ()=>{
 });
 
 describe('Test updateOne', () => {
-    Comments.update = jest.fn((value, option)=>{
-        const commentId = value.commentId
-
-        return commentId === 1? [ 1 ] : [null];
-    });
-    Comments.findByPk = jest.fn((commentId)=>{
-        if (commentId !== 1) return null;
-        return {
-            get: ()=>{
-                return { userId: 1 }
+    
+    test('should return status 200 and json message if successfully updated', async () => {
+        mockReq = {
+            body: { comment: 'test comment' },
+            params: { commentId: 1 },
+            app: {
+                locals: {
+                    user: { userId: 1 }
+                }
             }
         };
+        await Comment.updateOne(mockReq, mockRes, mockNext);
+
+        expect(mockRes.status).toBeCalledWith(200);
+        expect(mockRes.json).toBeCalledWith({ message: '댓글을 수정했습니다.' });
     });
     
-    // mockRes = Object.assign(mockRes, { check: { get: ()=>1 }})
+    test('should call next if either userId or commentId does not match', async () => {
+        mockReq = {
+            body: { comment: 'test comment' },
+            params: { commentId: 1 },
+            app: {
+                locals: {
+                    user: { userId: 2 }
+                }
+            }
+        };
+        await Comment.updateOne(mockReq, mockRes, mockNext);
 
-    // test('should return status 200 and json message if successfully updated', async () => {
-    //     console.log('REEEEEEEEEEEEEEEEQ: ', mockReq);
-    //     await Comment.updateOne(mockReq, mockRes, mockNext);
+        expect(mockNext).toBeCalled();
+    });
+});
 
-    //     expect(mockRes.json).toEqual({
-    //         get: ()=>{
-    //             return { userId: 1 }
-    //         }
-    //     })
+describe('Test deleteOne', () => {
+    
+    test('should return status 200 and json message if successfully deleted', async () => {
+        mockReq = {
+            params: { commentId: 1 },
+            app: {
+                locals: {
+                    user: { userId: 1 }
+                }
+            }
+        };
+        await Comment.deleteOne(mockReq, mockRes, mockNext);
 
-    //     // console.log(mockRes.check.get().userId);
-    //     // expect(mockNext).toBeCalledTimes(0);
-    //     // expect(mockRes.status).toBeCalledWith(200);
-    //     // expect(mockRes.jsonData).toEqual({ message: '댓글을 수정했습니다.' });
-    // });
+        expect(mockRes.status).toBeCalledWith(200);
+        expect(mockRes.json).toBeCalledWith({ message: "댓글을 삭제했습니다." });
+    });
+    
+    test('should call next if either userId or commentId does not match', async () => {
+        mockReq = {
+            params: { commentId: 1 },
+            app: {
+                locals: {
+                    user: { userId: 2 }
+                }
+            }
+        };
+        await Comment.deleteOne(mockReq, mockRes, mockNext);
+
+        expect(mockNext).toBeCalled();
+    });
 });
 
 const commentList = [

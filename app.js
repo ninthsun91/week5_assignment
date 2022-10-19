@@ -6,7 +6,8 @@ import env from "./config.env.js";
 import sequelize from "./database/config/connection.js";
 import router from "./api/routes/index.js";
 import associateModels from "./database/config/association.js";
-import { errorHandler } from "./middlewares/errorHandler.js";
+import { InvalidAccessError } from "./utils/httpException.js";
+import { errorLogger, errorHandler } from "./middlewares/errorHandler.js";
 
 
 const app = express();
@@ -28,18 +29,17 @@ app.use(session({
 app.use("/", router);
 
 app.use((req, res, next)=>{
-    const error = new Error("PAGE NOT FOUND");
-    // res.status(404).send(error.message);
-    res.status(404).json({ message: error.message });
+    const error = new InvalidAccessError("PAGE NOT FOUND", 404);
+    next(error);
 });
 
+app.use(errorLogger);
 app.use(errorHandler);
-
-
 
 
 app.listen(PORT, async()=>{
     console.log(`SERVER RUNNING ON PORT ${PORT}`);
+    console.log(env);
     try {
         await sequelize.authenticate();
         associateModels(sequelize);
@@ -49,3 +49,4 @@ app.listen(PORT, async()=>{
         process.exit(0);
     };    
 });
+

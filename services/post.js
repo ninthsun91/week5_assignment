@@ -27,6 +27,9 @@ export default class PostService {
 
     findOne = async(postId) => {
         const post = await this.Post.findOne(postId);
+        console.log("POST SERVICE: ", post);
+        console.log("dataValues: ", post.dataValues);
+        console.log("get(): ", post.get());
 
         if (post === null) throw new Error("POST NOT FOUND");
 

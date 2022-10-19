@@ -5,9 +5,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "set NODE_ENV=test && nodemon app.js",
-    "local": "set NODE_ENV=local && nodemon app.js",
-    "start": "nodemon app.js",
+    "dev": "set NODE_ENV=test && nodemon server.js",
+    "local": "set NODE_ENV=local && nodemon server.js",
+    "start": "nodemon server.js",
     "test": "set NODE_ENV=test && jest --detectOpenHandles --forceExit",
     "coverage": "set NODE_ENV=test && jest --coverage",
     "db:create": "node database/config/create.js",

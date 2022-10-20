@@ -10,14 +10,15 @@ export default {
                 = await joi.commentSchema.validateAsync(req.body);
         
             const doc = { 
-                postId: req.params.postId,
+                postId: Number(req.params.postId),
                 userId: req.app.locals.user.userId, 
                 comment 
             }
-            await Comment.createOne(doc);
+            const result = await Comment.createOne(doc);
         
             res.status(200).json({
-                message: "댓글을 작성했습니다."
+                message: "댓글을 작성했습니다.",
+                result
             });
             
         } catch (error) {

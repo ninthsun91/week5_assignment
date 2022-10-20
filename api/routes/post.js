@@ -52,6 +52,7 @@ router.put("/:postId", auth.authMiddleware, Post.updateOne);
 router.delete("/:postId", auth.authMiddleware, Post.deleteOne);
 
 
+
 /**
  * FIND LIKED POSTS BY CURRENT USER
  * request header: { Authorization: "Bearer accessToken", Refreshtoken: "refreshToken" }

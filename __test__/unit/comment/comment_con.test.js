@@ -56,7 +56,7 @@ describe('Test createOne', () => {
         await Comment.createOne(mockReq, mockRes, mockNext);
 
         expect(mockRes.status).toBeCalledWith(200);
-        expect(mockRes.json).toBeCalledWith({ message: '댓글을 작성했습니다.' });
+        expect(mockRes.json).toBeCalled();
     });
 
     test('should call next if wrong comment data is given', async () => {

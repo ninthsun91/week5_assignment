@@ -14,10 +14,11 @@ export default class PostController {
         };
     
         try {
-            await this.Post.createOne(post);
+            const result = await this.Post.createOne(post);
         
             res.status(200).json({
-                message: "게시글을 작성했습니다."
+                message: "게시글을 작성했습니다.",
+                result
             });
             
         } catch (error) {

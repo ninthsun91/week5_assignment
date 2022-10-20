@@ -42,6 +42,7 @@ export default class UserController {
                 = await joi.signinSchema.validateAsync(req.body);
     
             const user = await this.User.findNickname(nickname);
+
             if (user===null || !(await bcrypt.compare(password, user.password))) {
                 throw new Error("닉네임 또는 패스워드를 확인해주세요.");
             }

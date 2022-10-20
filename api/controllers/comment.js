@@ -1,5 +1,6 @@
 import Comment from "../../services/comment.js"
 import joi from "../../utils/validator.js";
+import { InvalidAccessError, InternalError } from "../../utils/httpException.js";
 
 
 export default {
@@ -20,9 +21,7 @@ export default {
             });
             
         } catch (error) {
-            res.status(400).json({
-                message: error.message
-            });
+            next(error);
         }    
     },
     
@@ -44,9 +43,9 @@ export default {
             const result = await Comment.updateOne({ commentId, userId, comment });
             switch (result[0]) {
                 case null:
-                    throw new Error("수정 권한이 없습니다.");
+                    throw new InvalidAccessError("수정 권한이 없습니다.", 401);
                 case 0:
-                    throw new Error("INTERNAL UPDATE FAILURE");
+                    throw new InternalError("INTERNAL UPDATE FAILURE");
             }
         
             res.status(200).json({
@@ -54,9 +53,7 @@ export default {
             });
             
         } catch (error) {
-            res.status(400).json({
-                message: error.message,
-            });
+            next(error);
         }
     },
     
@@ -68,9 +65,9 @@ export default {
             const result = await Comment.deleteOne({ userId, commentId });
             switch (result) {
                 case null:
-                    throw new Error("삭제 권한이 없습니다.");
+                    throw InvalidAccessError("삭제 권한이 없습니다.", 401);
                 case 0:
-                    throw new Error("INTERNAL DELETE FAILURE");
+                    throw InternalError("INTERNAL DELETE FAILURE");
             }
         
             res.status(200).json({
@@ -78,9 +75,7 @@ export default {
             });
             
         } catch (error) {
-            res.status(400).json({
-                message: error.message,
-            });
+            next(error);
         }
     }
 }

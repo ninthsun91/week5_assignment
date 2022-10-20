@@ -2,7 +2,9 @@ import UserRepository from "../database/repositories/user.js";
 
 
 export default class UserService {
-    User = new UserRepository();
+        User = new UserRepository();
+    
+    
 
     findNickname = async(nickname) => {
         const result = await this.User.findOne(nickname);

@@ -2,8 +2,12 @@ import Users from "../../database/models/user.js";
 import { Op } from "sequelize";
 
 export default class UserRepository {
+  constructor(){
+    this.User = Users
+  }
+
     findOne = async(ID) => {
-        return await Users.findOne({
+        return await this.User.findOne({
             where: { 
                 [Op.or]: [
                     { userId: ID },
@@ -14,7 +18,7 @@ export default class UserRepository {
     }
     
     createOne = async(user) => {
-        return await Users.create(user);
+        return await this.User.create(user);
     }
 }
 
